@@ -5,20 +5,18 @@ import Register from './containers/Register';
 
 import theme from './theme';
 
-import { CssBaseline, MuiThemeProvider, Typography, Button, AppBar, } from '@material-ui/core';
+import { CssBaseline, MuiThemeProvider, Typography, Button, } from '@material-ui/core';
 import CtaButton from './components/CtaButton';
-import Logo from './components/Logo/Logo';
 
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppBar position="fixed">
-
-        </AppBar>
-        <Register />
-      </MuiThemeProvider>
+      <BrowserRouter>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+          <Register />
+        </MuiThemeProvider>
+      </BrowserRouter>
     );
   }
 }
