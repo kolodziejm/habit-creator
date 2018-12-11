@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { logoutUser } from '../actions/authActions';
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -159,7 +160,7 @@ class Navbar extends React.Component {
             </Hidden>
             {isAuthenticated ? (
               <Tooltip title="Logout">
-                <IconButton color="inherit" className={classes.logout}>
+                <IconButton color="inherit" className={classes.logout} onClick={this.props.logoutUser}>
                   <PowerSettingsNew />
                 </IconButton>
               </Tooltip>
@@ -196,4 +197,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(withRouter(withStyles(styles, { withTheme: true })(Navbar)));
+export default connect(mapStateToProps, { logoutUser })(withRouter(withStyles(styles, { withTheme: true })(Navbar)));
