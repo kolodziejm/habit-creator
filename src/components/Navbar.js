@@ -19,9 +19,7 @@ import Tab from '@material-ui/core/Tab';
 
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
-import { Link } from 'react-router-dom';
-
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const drawerWidth = 200;
 
@@ -160,7 +158,7 @@ class Navbar extends React.Component {
             </Hidden>
             {isAuthenticated ? (
               <Tooltip title="Logout">
-                <IconButton color="inherit" className={classes.logout} onClick={this.props.logoutUser}>
+                <IconButton color="inherit" className={classes.logout} onClick={() => this.props.logoutUser(this.props.history)}>
                   <PowerSettingsNew />
                 </IconButton>
               </Tooltip>
@@ -197,4 +195,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { logoutUser })(withRouter(withStyles(styles, { withTheme: true })(Navbar)));
+export default connect(mapStateToProps, { logoutUser })(withRouter(withStyles(styles, { withTheme: true })(withRouter(Navbar))));

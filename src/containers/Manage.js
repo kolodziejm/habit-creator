@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom';
+
 import Navbar from '../components/Navbar';
 
 class Manage extends Component {
@@ -14,4 +16,4 @@ class Manage extends Component {
   }
 }
 
-export default Manage;
+export default withRouter(Manage);

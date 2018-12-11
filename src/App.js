@@ -16,12 +16,10 @@ import store from './store';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
 if (localStorage.jwtToken) { // set user in store with decoded token data if token exists
-  axios.defaults.headers.common['Authorization'] = localStorage.jwtToken;
   const decodedData = jwtDecode(localStorage.jwtToken);
   store.dispatch(setUser(decodedData));
 
   if (decodedData.exp < Date.now() / 1000) { // unix in sec, Date obj in ms 
-    delete axios.defaults.headers.common['Authorization'];
     store.dispatch(logoutUser());
   }
 }

@@ -51,7 +51,6 @@ class Login extends Component {
     axios.post('/auth/login', loginData)
       .then(res => {
         const { token } = res.data;
-        axios.defaults.headers.common['Authorization'] = token;
         localStorage.setItem('jwtToken', token);
         const decodedData = jwtDecode(token);
         this.props.setUser(decodedData);
@@ -76,6 +75,7 @@ class Login extends Component {
             <form
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
+              <input type="submit" style={{ visibility: 'hidden' }} />
               <TextField
                 autoFocus
                 margin="normal"
@@ -104,6 +104,7 @@ class Login extends Component {
               />
             </form>
             <CtaButton
+              type="submit"
               clicked={this.onSubmitHandler}>
               {btnLoading ?
                 <CircularProgress
