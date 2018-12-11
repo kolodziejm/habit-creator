@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from '../config/axios';
-import { withRouter } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import theme from '../theme';
+
+import { setUser } from '../actions/authActions';
+import { connect } from 'react-redux';
 
 import Logo from '../components/Logo/Logo';
-
-import theme from '../theme';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography, TextField, AppBar, CircularProgress } from '@material-ui/core';
 import CtaButton from '../components/CtaButton';
@@ -29,11 +31,10 @@ const styles = {
   }
 };
 
-class Register extends Component {
+class Login extends Component {
   state = {
     username: '',
     password: '',
-    confirmPassword: '',
     errors: {},
     btnLoading: false
   }
@@ -43,19 +44,19 @@ class Register extends Component {
   onSubmitHandler = e => {
     e.preventDefault();
     this.setState({ btnLoading: true });
-    const { username, password, confirmPassword } = this.state;
-    const registerData = {
-      username, password, confirmPassword
+    const { username, password } = this.state;
+    const loginData = {
+      username, password
     };
-    axios.post('/auth/register', registerData)
+    axios.post('/auth/login', loginData)
       .then(res => {
-        setTimeout(() => {
-          this.props.history.push('/');
-        }, 700)
+        const { token } = res.data;
+        axios.defaults.headers.common['Authorization'] = token;
+        localStorage.setItem('jwtToken', token);
+        const decodedData = jwtDecode(token);
+        this.props.setUser(decodedData);
       })
-      .catch(err => {
-        this.setState({ errors: err.response.data.errObj, btnLoading: false });
-      });
+      .catch(err => this.setState({ errors: err.response.data.errObj, btnLoading: false }));
   }
 
   render() {
@@ -64,14 +65,14 @@ class Register extends Component {
 
     return (
       <>
-        <Navbar navValue={1} />
+        <Navbar navValue={0} />
         <main className={classes.main}>
           <Paper className={classes.paper}>
             <Logo width="200" />
             <Typography
               variant="h5"
               align="center"
-              className={classes.mainHeader}>Create account</Typography>
+              className={classes.mainHeader}>Login</Typography>
             <form
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
@@ -95,23 +96,11 @@ class Register extends Component {
                 name="password"
                 type="password"
                 fullWidth
+                className={classes.lastInput}
                 onChange={this.inputChangedHandler}
                 value={this.state.password}
                 error={errors.password ? true : false}
                 helperText={errors.password ? errors.password : ''}
-              />
-              <TextField
-                margin="normal"
-                id="confirmPassword"
-                label="Confirm password"
-                name="confirmPassword"
-                type="password"
-                fullWidth
-                onChange={this.inputChangedHandler}
-                value={this.state.confirmPassword}
-                className={classes.lastInput}
-                error={errors.confirmPassword ? true : false}
-                helperText={errors.confirmPassword ? errors.confirmPassword : ''}
               />
             </form>
             <CtaButton
@@ -119,7 +108,7 @@ class Register extends Component {
               {btnLoading ?
                 <CircularProgress
                   color="secondary"
-                  style={{ width: '19px', height: '19px' }} /> : 'Register'}</CtaButton>
+                  style={{ width: '19px', height: '19px' }} /> : 'Login'}</CtaButton>
           </Paper>
         </main>
       </>
@@ -127,4 +116,4 @@ class Register extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Register));
+export default connect(null, { setUser })(withStyles(styles)(Login));

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -86,8 +88,7 @@ const styles = theme => ({
 
 class Navbar extends React.Component {
   state = {
-    mobileOpen: false,
-    isAuthenticated: false
+    mobileOpen: false
   };
 
   handleDrawerToggle = () => this.setState(state => ({ mobileOpen: !state.mobileOpen }));
@@ -95,6 +96,7 @@ class Navbar extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
+    const { isAuthenticated } = this.props.auth;
 
     const authLinks = (
       <Tabs value={this.props.navValue} className={classes.tabs}>
@@ -115,7 +117,7 @@ class Navbar extends React.Component {
 
     const nonAuthLinks = (
       <Tabs value={this.props.navValue} className={classes.tabs}>
-        <Tab label="Login" className={classes.tab} component={Link} to="/login" />
+        <Tab label="Login" className={classes.tab} component={Link} to="/" />
         <Tab label="Register" className={classes.tab} component={Link} to="/register" />
       </Tabs>
     );
@@ -123,7 +125,7 @@ class Navbar extends React.Component {
     const nonAuthMobileLinks = (
       <List className={classes.list}>
         <Typography variant="h6" color="inherit" align="center" gutterBottom className={classes.mobileTitle}>Habit Creator</Typography>
-        <ListItem button selected={this.props.navValue === 0} component={Link} to="/login">Login</ListItem>
+        <ListItem button selected={this.props.navValue === 0} component={Link} to="/">Login</ListItem>
         <Divider />
         <ListItem button selected={this.props.navValue === 1} component={Link} to="/register">Register</ListItem>
         <Divider />
@@ -133,7 +135,7 @@ class Navbar extends React.Component {
     const drawer = (
       <div className={classes.drawer}>
         <div className={classes.toolbar} />
-        {this.state.isAuthenticated ? authMobileLinks : nonAuthMobileLinks}
+        {isAuthenticated ? authMobileLinks : nonAuthMobileLinks}
       </div>
     );
 
@@ -153,9 +155,9 @@ class Navbar extends React.Component {
               Habit Creator
             </Typography>
             <Hidden smDown>
-              {this.state.isAuthenticated ? authLinks : nonAuthLinks}
+              {isAuthenticated ? authLinks : nonAuthLinks}
             </Hidden>
-            {this.state.isAuthenticated ? (
+            {isAuthenticated ? (
               <Tooltip title="Logout">
                 <IconButton color="inherit" className={classes.logout}>
                   <PowerSettingsNew />
@@ -190,4 +192,8 @@ Navbar.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles, { withTheme: true })(Navbar));
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(withRouter(withStyles(styles, { withTheme: true })(Navbar)));
