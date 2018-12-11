@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
+import Navbar from '../components/Navbar';
 
-export default class Dashboard extends Component {
+class Manage extends Component {
   render() {
     return (
-      <div>
-        <h1>Hello from manage</h1>
-      </div>
+      <>
+        <Navbar navValue={1} />
+        <main>
+          <h1>Hello from manage</h1>
+        </main>
+      </>
     )
   }
 }
+
+export default Manage;

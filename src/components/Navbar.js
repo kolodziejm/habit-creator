@@ -100,7 +100,7 @@ class Navbar extends React.Component {
 
     const authLinks = (
       <Tabs value={this.props.navValue} className={classes.tabs}>
-        <Tab label="Dashboard" className={classes.tab} component={Link} to="/dashboard" />
+        <Tab label="Dashboard" className={classes.tab} component={Link} to="/" />
         <Tab label="Manage" className={classes.tab} component={Link} to="/manage" />
       </Tabs>
     );
@@ -108,7 +108,7 @@ class Navbar extends React.Component {
     const authMobileLinks = (
       <List className={classes.list}>
         <Typography variant="h6" color="inherit" align="center" gutterBottom className={classes.mobileTitle}>Habit Creator</Typography>
-        <ListItem button selected={this.props.navValue === 0} component={Link} to="/dashboard">Dashboard</ListItem>
+        <ListItem button selected={this.props.navValue === 0} component={Link} to="/">Dashboard</ListItem>
         <Divider />
         <ListItem button selected={this.props.navValue === 1} component={Link} to="/manage">Manage</ListItem>
         <Divider />
