@@ -75,11 +75,12 @@ class Register extends Component {
             <form
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
+              <input type="submit" style={{ visibility: 'hidden' }} />
               <TextField
                 autoFocus
                 margin="normal"
                 id="username"
-                label="Enter username"
+                label="Username"
                 name="username"
                 type="text"
                 fullWidth
@@ -91,7 +92,7 @@ class Register extends Component {
               <TextField
                 margin="normal"
                 id="password"
-                label="Enter a password"
+                label="Password"
                 name="password"
                 type="password"
                 fullWidth

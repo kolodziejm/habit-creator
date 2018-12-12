@@ -43,8 +43,17 @@ class Login extends Component {
 
   onSubmitHandler = e => {
     e.preventDefault();
-    this.setState({ btnLoading: true });
     const { username, password } = this.state;
+    if (username === '' && password === '') {
+      return this.setState({ errors: { username: 'Enter your username', password: 'Enter a password' } });
+    }
+    if (username === '') {
+      return this.setState({ errors: { username: 'Enter your username' } })
+    }
+    if (password === '') {
+      return this.setState({ errors: { password: 'Enter a password' } });
+    }
+    this.setState({ btnLoading: true });
     const loginData = {
       username, password
     };
@@ -80,7 +89,7 @@ class Login extends Component {
                 autoFocus
                 margin="normal"
                 id="username"
-                label="Enter username"
+                label="Username"
                 name="username"
                 type="text"
                 fullWidth
@@ -92,7 +101,7 @@ class Login extends Component {
               <TextField
                 margin="normal"
                 id="password"
-                label="Enter a password"
+                label="Password"
                 name="password"
                 type="password"
                 fullWidth
