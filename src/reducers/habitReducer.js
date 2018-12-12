@@ -2,6 +2,7 @@ import { SET_HABITS } from '../actions/types';
 
 const initialState = {
   habits: [],
+  loading: true
 }
 
 export default (state = initialState, action) => {
@@ -9,7 +10,8 @@ export default (state = initialState, action) => {
     case SET_HABITS:
       return {
         ...state,
-        habits: action.payload
+        habits: action.payload,
+        loading: false
       }
 
     default:
