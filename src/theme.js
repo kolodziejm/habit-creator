@@ -15,7 +15,7 @@ export default createMuiTheme({
       color: '#000000'
     },
     info: {
-      backgroundColor: '#81d4fa',
+      backgroundColor: '#00e5ff',
       color: '#000000'
     },
     error: {

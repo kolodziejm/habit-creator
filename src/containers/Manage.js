@@ -27,7 +27,12 @@ const styles = {
     margin: '32px 0 32px 0'
   },
   addSnackbar: {
-    backgroundColor: theme.palette.info.backgroundColor
+    backgroundColor: theme.palette.info.backgroundColor,
+    color: theme.palette.info.color
+  },
+  errorSnackbar: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText
   }
 };
 
@@ -35,13 +40,14 @@ class Manage extends Component {
 
   state = {
     errors: {},
+    errorSnackbarOpen: false,
     isMenuOpen: false,
     anchorEl: null,
     habitId: '',
     editHabitName: '',
     name: '',
     addDialogOpen: false,
-    addSnackbarOpen: true,
+    addSnackbarOpen: false,
     editDialogOpen: false,
     deleteDialogOpen: false,
   }
@@ -73,6 +79,7 @@ class Manage extends Component {
   }
 
   openAddDialogHandler = e => {
+    if (this.props.habits.habits.length >= 10) return this.openErrorSnackbar();
     this.setState({
       addDialogOpen: true,
       name: '',
@@ -106,7 +113,12 @@ class Manage extends Component {
 
   closeAddSnackbar = () => this.setState({ addSnackbarOpen: false });
 
+  openErrorSnackbar = () => this.setState({ errorSnackbarOpen: true });
+
+  closeErrorSnackbar = () => this.setState({ errorSnackbarOpen: false });
+
   addNewHabit = e => {
+    e.preventDefault();
     const { name } = this.state;
     const habitData = { name };
     axios.post('/habits', habitData)
@@ -142,6 +154,7 @@ class Manage extends Component {
             <Button
               color="secondary"
               variant="contained"
+              disableFocusRipple
               size="medium"
               onClick={this.openAddDialogHandler}
             >
@@ -156,18 +169,20 @@ class Manage extends Component {
               <DialogContentText>
                 Enter a habit name below. Make sure that it's specific, it'll help you stay consistent!
               </DialogContentText>
-              <TextField
-                onChange={this.inputChangedHandler}
-                value={this.state.name}
-                autoFocus
-                type="text"
-                label="Habit name"
-                margin="normal"
-                name="name"
-                fullWidth
-                error={errors.name ? true : false}
-                helperText={errors.name ? errors.name : null}
-              />
+              <form onSubmit={this.addNewHabit}>
+                <input type="submit" style={{ visibility: 'hidden' }} />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.name}
+                  autoFocus
+                  type="text"
+                  label="Habit name"
+                  name="name"
+                  fullWidth
+                  error={errors.name ? true : false}
+                  helperText={errors.name ? errors.name : null}
+                />
+              </form>
             </DialogContent>
             <DialogActions>
               <Button
@@ -180,18 +195,6 @@ class Manage extends Component {
               </Button>
             </DialogActions>
           </Dialog>
-          <Snackbar
-            ContentProps={{
-              classes: {
-                root: classes.addSnackbar
-              }
-            }}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            open={this.state.addSnackbarOpen}
-            autoHideDuration={5000}
-            onClose={this.closeAddSnackbar}
-            message={<Typography variant="body1">Habit successfully added!</Typography>}
-          />
           <ul className={classes.list}>
             {habitList}
             <Menu
@@ -203,6 +206,30 @@ class Manage extends Component {
               <MenuItem>Delete</MenuItem>
             </Menu>
           </ul>
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.errorSnackbar
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.state.errorSnackbarOpen}
+            autoHideDuration={5000}
+            onClose={this.closeErrorSnackbar}
+            message="Maximum of 10 habits are allowed"
+          />
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.addSnackbar
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.state.addSnackbarOpen}
+            autoHideDuration={5000}
+            onClose={this.closeAddSnackbar}
+            message="Habit successfully added!"
+          />
         </main>
       </>
     )
