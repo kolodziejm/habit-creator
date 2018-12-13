@@ -8,9 +8,12 @@ import { Add } from '@material-ui/icons';
 import theme from '../theme';
 
 import { setHabits } from '../actions/habitActions';
+import { logoutUser } from '../actions/authActions';
 
 import Navbar from '../components/Navbar';
 import HabitItem from '../components/HabitItem';
+
+import jwtDecode from 'jwt-decode';
 
 const styles = {
   list: {
@@ -49,10 +52,15 @@ class Manage extends Component {
     addDialogOpen: false,
     addSnackbarOpen: false,
     editDialogOpen: false,
+    editSnackbarOpen: false,
     deleteDialogOpen: false,
   }
 
   componentDidMount() {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) {
+      this.props.logoutUser();
+    }
     axios.get('/habits')
       .then(res => this.props.setHabits(res.data))
       .catch(err => this.setState({ errors: err }))
@@ -99,6 +107,7 @@ class Manage extends Component {
 
   closeEditDialogHandler = e => {
     this.setState({ editDialogOpen: false })
+    this.closeMenuHandler(e);
   }
 
   openDeleteDialogHandler = e => {
@@ -107,15 +116,18 @@ class Manage extends Component {
 
   closeDeleteDialogHandler = e => {
     this.setState({ deleteDialogOpen: false })
+    this.closeMenuHandler(e);
   }
 
   openAddSnackbar = () => this.setState({ addSnackbarOpen: true });
 
-  closeAddSnackbar = () => this.setState({ addSnackbarOpen: false });
+  closeAddAndEditSnackbar = () => this.setState({ addSnackbarOpen: false, editSnackbarOpen: false });
 
   openErrorSnackbar = () => this.setState({ errorSnackbarOpen: true });
 
   closeErrorSnackbar = () => this.setState({ errorSnackbarOpen: false });
+
+  openEditSnackbar = () => this.setState({ editSnackbarOpen: true });
 
   addNewHabit = e => {
     e.preventDefault();
@@ -132,6 +144,23 @@ class Manage extends Component {
           .catch(err => this.setState({ errors: err.response.data.errObj }))
       })
       .catch(err => this.setState({ errors: err.response.data.errObj }));
+  }
+
+  editHabit = e => {
+    e.preventDefault();
+    const { editHabitName, habitId } = this.state;
+    const habitData = { editHabitName };
+    axios.patch(`/habits/${habitId}`, habitData)
+      .then(res => {
+        axios.get('/habits')
+          .then(res => {
+            this.props.setHabits(res.data)
+            this.closeEditDialogHandler();
+            this.openEditSnackbar();
+          })
+          .catch(err => this.setState({ errors: err.response.data.errObj }))
+      })
+      .catch(err => this.setState({ errors: err.response.data.errObj }))
   }
 
   render() {
@@ -202,10 +231,42 @@ class Manage extends Component {
               anchorEl={this.state.anchorEl}
               onBackdropClick={this.closeMenuHandler}
             >
-              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={this.openEditDialogHandler}>Edit</MenuItem>
               <MenuItem>Delete</MenuItem>
             </Menu>
           </ul>
+          <Dialog
+            open={this.state.editDialogOpen}
+            onClose={this.closeEditDialogHandler}
+          >
+            <DialogTitle>Edit habit</DialogTitle>
+            <DialogContent>
+              <form onSubmit={this.editHabit}>
+                <input type="submit" style={{ visibility: 'hidden' }} />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.editHabitName}
+                  autoFocus
+                  type="text"
+                  label="Habit name"
+                  name="editHabitName"
+                  fullWidth
+                  error={errors.editHabitName ? true : false}
+                  helperText={errors.editHabitName ? errors.editHabitName : null}
+                />
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="secondary"
+                variant="contained"
+                size="medium"
+                onClick={this.editHabit}
+              >
+                Edit
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Snackbar
             ContentProps={{
               classes: {
@@ -225,10 +286,10 @@ class Manage extends Component {
               }
             }}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            open={this.state.addSnackbarOpen}
+            open={this.state.addSnackbarOpen || this.state.editSnackbarOpen}
             autoHideDuration={5000}
-            onClose={this.closeAddSnackbar}
-            message="Habit successfully added!"
+            onClose={this.closeAddAndEditSnackbar}
+            message={this.state.addDialogOpen ? "Habit successfully added!" : "Habit successfully edited!"}
           />
         </main>
       </>
@@ -240,4 +301,4 @@ const mapStateToProps = state => ({
   habits: state.habit
 });
 
-export default connect(mapStateToProps, { setHabits })(withRouter(withStyles(styles)(Manage)));
+export default connect(mapStateToProps, { setHabits, logoutUser })(withRouter(withStyles(styles)(Manage)));

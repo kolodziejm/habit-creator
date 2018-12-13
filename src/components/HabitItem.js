@@ -29,7 +29,7 @@ class HabitItem extends Component {
         <Paper className={classes.paper}>
           <div className={classes.firstLineWrapper}>
             <Typography variant="h6">{this.props.name}</Typography>
-            <IconButton onClick={this.props.clicked}>
+            <IconButton onClick={this.props.clicked} disableRipple>
               <Settings />
             </IconButton>
           </div>
