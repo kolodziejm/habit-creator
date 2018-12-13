@@ -1,4 +1,4 @@
-import { SET_HABITS } from '../actions/types';
+import { SET_HABITS, ADD_HABIT } from '../actions/types';
 
 const initialState = {
   habits: [],
@@ -12,6 +12,11 @@ export default (state = initialState, action) => {
         ...state,
         habits: action.payload,
         loading: false
+      }
+    case ADD_HABIT:
+      return {
+        ...state,
+        habits: [action.payload, ...state.habits]
       }
 
     default:

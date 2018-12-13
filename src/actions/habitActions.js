@@ -1,7 +1,7 @@
 import dispatch from 'redux-thunk';
 import axios from '../config/axios';
 
-import { SET_HABITS } from './types';
+import { SET_HABITS, ADD_HABIT } from './types';
 
 export const setHabits = habits => dispatch => {
   dispatch({
@@ -9,3 +9,10 @@ export const setHabits = habits => dispatch => {
     payload: habits
   })
 };
+
+export const addHabit = habit => dispatch => {
+  dispatch({
+    type: ADD_HABIT,
+    payload: habit
+  })
+}

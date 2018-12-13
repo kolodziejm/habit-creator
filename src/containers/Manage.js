@@ -7,7 +7,7 @@ import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextF
 import { Add } from '@material-ui/icons';
 import theme from '../theme';
 
-import { setHabits } from '../actions/habitActions';
+import { setHabits, addHabit } from '../actions/habitActions';
 import { logoutUser } from '../actions/authActions';
 
 import Navbar from '../components/Navbar';
@@ -135,15 +135,12 @@ class Manage extends Component {
     const habitData = { name };
     axios.post('/habits', habitData)
       .then(res => {
-        axios.get('/habits')
-          .then(res => {
-            this.props.setHabits(res.data)
-            this.closeAddDialogHandler();
-            this.openAddSnackbar();
-          })
-          .catch(err => this.setState({ errors: err.response.data.errObj }))
+        console.log(res.data);
+        this.props.addHabit(res.data);
+        this.closeAddDialogHandler();
+        this.openAddSnackbar();
       })
-      .catch(err => this.setState({ errors: err.response.data.errObj }));
+      .catch(err => console.log(err));
   }
 
   editHabit = e => {
@@ -301,4 +298,4 @@ const mapStateToProps = state => ({
   habits: state.habit
 });
 
-export default connect(mapStateToProps, { setHabits, logoutUser })(withRouter(withStyles(styles)(Manage)));
+export default connect(mapStateToProps, { setHabits, logoutUser, addHabit })(withRouter(withStyles(styles)(Manage)));
