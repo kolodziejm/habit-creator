@@ -1,7 +1,7 @@
 import dispatch from 'redux-thunk';
 import axios from '../config/axios';
 
-import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT } from './types';
+import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT, FINISH_HABIT } from './types';
 
 export const setHabits = habits => ({
   type: SET_HABITS,
@@ -25,3 +25,8 @@ export const deleteHabit = habitId => ({
   type: DELETE_HABIT,
   habitId
 });
+
+export const finishHabit = habitId => ({
+  type: FINISH_HABIT,
+  habitId
+})

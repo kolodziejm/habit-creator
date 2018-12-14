@@ -1,4 +1,4 @@
-import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT } from '../actions/types';
+import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT, FINISH_HABIT } from '../actions/types';
 
 const initialState = {
   habits: [],
@@ -24,6 +24,18 @@ export default (state = initialState, action) => {
       const habitsCopy = [...state.habits];
       const habitIndex = habitsCopy.findIndex(habit => habit._id === action.payload.habitId);
       habitsCopy[habitIndex].name = action.payload.newName;
+      return {
+        ...state,
+        habits: habitsCopy
+      }
+    }
+
+    case FINISH_HABIT: {
+      const habitsCopy = [...state.habits];
+      const habitIndex = habitsCopy.findIndex(habit => habit._id === action.habitId);
+      habitsCopy[habitIndex].isFinished = true;
+      habitsCopy[habitIndex].lastDateFinished = new Date().toISOString();
+      habitsCopy[habitIndex].streak++;
       return {
         ...state,
         habits: habitsCopy

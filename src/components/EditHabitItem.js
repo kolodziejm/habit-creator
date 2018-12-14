@@ -19,7 +19,7 @@ const styles = {
   }
 };
 
-class HabitItem extends Component {
+class EditHabitItem extends Component {
 
   render() {
     const { classes } = this.props;
@@ -33,11 +33,11 @@ class HabitItem extends Component {
               <Settings />
             </IconButton>
           </div>
-          <Typography variant="body2">Current streak: {this.props.streak} days</Typography>
+          <Typography variant="body2">Current streak: {this.props.streak} {this.props.streak === 1 ? ' day' : ' days'}</Typography>
         </Paper>
       </li>
     )
   }
 }
 
-export default withStyles(styles)(HabitItem);
+export default withStyles(styles)(EditHabitItem);

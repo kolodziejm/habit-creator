@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from '../config/axios';
 import { withStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography } from '@material-ui/core';
+import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import theme from '../theme';
 
@@ -11,7 +11,7 @@ import { setHabits, addHabit, deleteHabit, editHabit } from '../actions/habitAct
 import { logoutUser } from '../actions/authActions';
 
 import Navbar from '../components/Navbar';
-import HabitItem from '../components/HabitItem';
+import EditHabitItem from '../components/EditHabitItem';
 
 import jwtDecode from 'jwt-decode';
 
@@ -23,6 +23,12 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '900px'
+  },
+  loadingWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 64
   },
   addBtnContainer: {
     display: 'flex',
@@ -185,7 +191,7 @@ class Manage extends Component {
     const { errors } = this.state;
 
     const habitList = this.props.habits.habits.map((habit, index) => (
-      <HabitItem
+      <EditHabitItem
         key={habit._id}
         name={habit.name}
         streak={habit.streak}
@@ -242,7 +248,11 @@ class Manage extends Component {
             </DialogActions>
           </Dialog>
           <ul className={classes.list}>
-            {habitList}
+            {this.props.habits.loading ?
+              <div className={classes.loadingWrapper}>
+                <CircularProgress style={{ width: 60, height: 60 }} />
+              </div>
+              : habitList}
             <Menu
               open={this.state.isMenuOpen}
               anchorEl={this.state.anchorEl}
