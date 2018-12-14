@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import jwtDecode from 'jwt-decode';
@@ -39,6 +39,12 @@ const styles = {
   info: {
     backgroundColor: theme.palette.info.backgroundColor,
     color: theme.palette.info.color
+  },
+  linkBtnWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16
   }
 };
 
@@ -119,7 +125,7 @@ class Dashboard extends Component {
           </div>
           <div className={classes.progressWrapper}>
             <Line
-              percent={completedPercent ? completedPercent : 0}
+              percent={completedPercent !== 'NaN' ? completedPercent : 0}
               strokeWidth="2"
               trailWidth="2"
               strokeColor={theme.palette.secondary.main} />
@@ -129,7 +135,20 @@ class Dashboard extends Component {
               <div className={classes.loadingWrapper}>
                 <CircularProgress style={{ width: 60, height: 60 }} />
               </div>
-              : habitList}
+              : habitList.length > 0 ? habitList :
+                <div>
+                  <Typography variant="h5" align="center">You currently don't have any active habits</Typography>
+                  <div className={classes.linkBtnWrapper}>
+                    <Button
+                      component={Link} to="/manage"
+                      color="secondary"
+                      variant="contained"
+                      size="medium"
+                    >
+                      Add some here!
+                  </Button>
+                  </div>
+                </div>}
           </ul>
           <Dialog
             open={this.state.finishDialogOpen}
