@@ -7,7 +7,7 @@ import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextF
 import { Add } from '@material-ui/icons';
 import theme from '../theme';
 
-import { setHabits, addHabit, deleteHabit } from '../actions/habitActions';
+import { setHabits, addHabit, deleteHabit, editHabit } from '../actions/habitActions';
 import { logoutUser } from '../actions/authActions';
 
 import Navbar from '../components/Navbar';
@@ -100,11 +100,7 @@ class Manage extends Component {
     })
   }
 
-  closeAddDialogHandler = e => {
-    this.setState({
-      addDialogOpen: false
-    })
-  }
+  closeAddDialogHandler = e => this.setState({ addDialogOpen: false })
 
   openEditDialogHandler = e => {
     this.setState({
@@ -165,13 +161,9 @@ class Manage extends Component {
     const habitData = { editHabitName };
     axios.patch(`/habits/${habitId}`, habitData)
       .then(res => {
-        axios.get('/habits')
-          .then(res => {
-            this.props.setHabits(res.data)
-            this.closeEditDialogHandler();
-            this.openEditSnackbar();
-          })
-          .catch(err => this.setState({ errors: err.response.data.errObj }))
+        this.props.editHabit(habitId, editHabitName);
+        this.closeEditDialogHandler();
+        this.openEditSnackbar();
       })
       .catch(err => this.setState({ errors: err.response.data.errObj }))
   }
@@ -296,7 +288,7 @@ class Manage extends Component {
             open={this.state.deleteDialogOpen}
             onClose={this.closeDeleteDialogHandler}
           >
-            <DialogTitle>{this.state.editHabitName}</DialogTitle>
+            <DialogTitle>{this.state.editHabitName ? this.state.editHabitName : <span>&nbsp;</span>}</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Are you sure you want to delete this habit? You will lose any existing streak!
@@ -359,4 +351,4 @@ const mapStateToProps = state => ({
   habits: state.habit
 });
 
-export default connect(mapStateToProps, { setHabits, logoutUser, addHabit, deleteHabit })(withRouter(withStyles(styles)(Manage)));
+export default connect(mapStateToProps, { setHabits, logoutUser, addHabit, deleteHabit, editHabit })(withRouter(withStyles(styles)(Manage)));

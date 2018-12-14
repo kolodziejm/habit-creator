@@ -1,4 +1,4 @@
-import { SET_HABITS, ADD_HABIT, DELETE_HABIT } from '../actions/types';
+import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT } from '../actions/types';
 
 const initialState = {
   habits: [],
@@ -19,6 +19,16 @@ export default (state = initialState, action) => {
         ...state,
         habits: [action.payload, ...state.habits]
       }
+
+    case EDIT_HABIT: {
+      const habitsCopy = [...state.habits];
+      const habitIndex = habitsCopy.findIndex(habit => habit._id === action.payload.habitId);
+      habitsCopy[habitIndex].name = action.payload.newName;
+      return {
+        ...state,
+        habits: habitsCopy
+      }
+    }
 
     case DELETE_HABIT:
       return {
