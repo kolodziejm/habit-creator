@@ -25,7 +25,7 @@ const styles = {
     },
   },
   lastInput: {
-    marginBottom: '32px'
+    marginBottom: 32
   }
 };
 
