@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 
+import Navbar from '../components/Navbar';
+
 class Shop extends Component {
   render() {
     return (
-      <div>
-        <h1>Shop</h1>
-      </div>
+      <>
+        <Navbar navValue={2} />
+        <main>
+          <h1>Shop</h1>
+        </main>
+      </>
     )
   }
 }

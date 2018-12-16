@@ -9,6 +9,7 @@ import Register from './containers/Register';
 import Login from './containers/Login';
 import Dashboard from './containers/Dashboard';
 import Manage from './containers/Manage';
+import Shop from './containers/Shop';
 
 import theme from './theme';
 import store from './store';
@@ -33,6 +34,7 @@ class App extends Component {
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route exact path="/manage" component={Manage} />
+        <Route exact path="/shop" component={Shop} />
       </Switch>
     );
 
