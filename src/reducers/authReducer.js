@@ -1,4 +1,4 @@
-import { SET_USER, LOGOUT_USER } from '../actions/types';
+import { SET_USER, LOGOUT_USER, CLEAR_EXPIRED_INFO } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
@@ -21,6 +21,12 @@ export default (state = initialState, action) => {
         user: {},
         isAuthenticated: false,
         expiredInfo: action.withMessage ? 'Token has expired, log in again' : ''
+      }
+
+    case CLEAR_EXPIRED_INFO:
+      return {
+        ...state,
+        expiredInfo: ''
       }
 
     default:

@@ -37,15 +37,18 @@ const styles = {
   },
   addSnackbar: {
     backgroundColor: theme.palette.info.backgroundColor,
-    color: theme.palette.info.color
+    color: theme.palette.info.color,
+    padding: '8px 16px',
   },
   errorSnackbar: {
     backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText
+    color: theme.palette.error.contrastText,
+    padding: '8px 16px',
   },
   danger: {
     backgroundColor: theme.palette.danger.backgroundColor,
-    color: theme.palette.danger.color
+    color: theme.palette.danger.color,
+    padding: '8px 16px',
   }
 };
 

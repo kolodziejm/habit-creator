@@ -3,12 +3,12 @@ import axios from '../config/axios';
 import jwtDecode from 'jwt-decode';
 import theme from '../theme';
 
-import { setUser } from '../actions/authActions';
+import { setUser, clearExpiredInfo } from '../actions/authActions';
 import { connect } from 'react-redux';
 
 import Logo from '../components/Logo/Logo';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, TextField, AppBar, CircularProgress } from '@material-ui/core';
+import { Paper, Typography, TextField, AppBar, CircularProgress, Snackbar } from '@material-ui/core';
 import CtaButton from '../components/CtaButton';
 import Navbar from '../components/Navbar';
 
@@ -28,7 +28,12 @@ const styles = {
   },
   lastInput: {
     marginBottom: 32
-  }
+  },
+  info: {
+    backgroundColor: theme.palette.info.backgroundColor,
+    color: theme.palette.info.color,
+    padding: '8px 16px',
+  },
 };
 
 class Login extends Component {
@@ -120,10 +125,26 @@ class Login extends Component {
                   color="secondary"
                   style={{ width: '19px', height: '19px' }} /> : 'Login'}</CtaButton>
           </Paper>
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.info
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.props.auth.expiredInfo !== ''}
+            autoHideDuration={10000}
+            message={this.props.auth.expiredInfo}
+            onClose={this.props.clearExpiredInfo}
+          />
         </main>
       </>
     )
   }
 }
 
-export default connect(null, { setUser })(withStyles(styles)(Login));
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { setUser, clearExpiredInfo })(withStyles(styles)(Login));

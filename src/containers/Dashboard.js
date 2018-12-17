@@ -39,7 +39,8 @@ const styles = {
   },
   info: {
     backgroundColor: theme.palette.info.backgroundColor,
-    color: theme.palette.info.color
+    color: theme.palette.info.color,
+    padding: '8px 16px',
   },
   linkBtnWrapper: {
     display: 'flex',
