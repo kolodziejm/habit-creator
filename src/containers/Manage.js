@@ -69,9 +69,8 @@ class Manage extends Component {
 
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) {
-      this.props.logoutUser();
-    }
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+
     axios.get('/habits')
       .then(res => this.props.setHabits(res.data))
       .catch(err => this.setState({ errors: err }))
@@ -79,7 +78,9 @@ class Manage extends Component {
 
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
 
-  openMenuHandler = (e, habitId, editHabitName) => {
+  openMenu = (e, habitId, editHabitName) => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     this.setState({
       isMenuOpen: true,
       anchorEl: e.currentTarget,
@@ -88,7 +89,7 @@ class Manage extends Component {
     })
   }
 
-  closeMenuHandler = e => {
+  closeMenu = e => {
     this.setState({
       isMenuOpen: false,
       anchorEl: null,
@@ -97,7 +98,9 @@ class Manage extends Component {
     });
   }
 
-  openAddDialogHandler = e => {
+  openAddDialog = e => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     if (this.props.habits.habits.length >= 10) return this.openErrorSnackbar();
     this.setState({
       addDialogOpen: true,
@@ -106,9 +109,9 @@ class Manage extends Component {
     })
   }
 
-  closeAddDialogHandler = e => this.setState({ addDialogOpen: false })
+  closeAddDialog = e => this.setState({ addDialogOpen: false })
 
-  openEditDialogHandler = e => {
+  openEditDialog = e => {
     this.setState({
       editDialogOpen: true,
       isMenuOpen: false,
@@ -116,12 +119,12 @@ class Manage extends Component {
     })
   }
 
-  closeEditDialogHandler = e => {
+  closeEditDialog = e => {
     this.setState({ editDialogOpen: false })
-    this.closeMenuHandler(e);
+    this.closeMenu(e);
   }
 
-  openDeleteDialogHandler = e => {
+  openDeleteDialog = e => {
     this.setState({
       deleteDialogOpen: true,
       isMenuOpen: false,
@@ -129,9 +132,9 @@ class Manage extends Component {
     })
   }
 
-  closeDeleteDialogHandler = e => {
+  closeDeleteDialog = e => {
     this.setState({ deleteDialogOpen: false })
-    this.closeMenuHandler(e);
+    this.closeMenu(e);
   }
 
   openAddSnackbar = () => this.setState({ addSnackbarOpen: true });
@@ -150,12 +153,14 @@ class Manage extends Component {
 
   addNewHabit = e => {
     e.preventDefault();
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     const { name } = this.state;
     const habitData = { name };
     axios.post('/habits', habitData)
       .then(res => {
         this.props.addHabit(res.data);
-        this.closeAddDialogHandler();
+        this.closeAddDialog();
         this.openAddSnackbar();
       })
       .catch(err => console.log(err));
@@ -163,12 +168,14 @@ class Manage extends Component {
 
   editHabit = e => {
     e.preventDefault();
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     const { editHabitName, habitId } = this.state;
     const habitData = { editHabitName };
     axios.patch(`/habits/${habitId}`, habitData)
       .then(res => {
         this.props.editHabit(habitId, editHabitName);
-        this.closeEditDialogHandler();
+        this.closeEditDialog();
         this.openEditSnackbar();
       })
       .catch(err => this.setState({ errors: err.response.data.errObj }))
@@ -176,11 +183,13 @@ class Manage extends Component {
 
   deleteHabit = e => {
     e.preventDefault();
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     const { habitId } = this.state;
     axios.delete(`/habits/${habitId}`)
       .then(res => {
         this.props.deleteHabit(habitId);
-        this.closeDeleteDialogHandler();
+        this.closeDeleteDialog();
         this.openDeleteSnackbar();
       })
       .catch(err => console.log(err));
@@ -195,7 +204,7 @@ class Manage extends Component {
         key={habit._id}
         name={habit.name}
         streak={habit.streak}
-        clicked={(e) => this.openMenuHandler(e, habit._id, habit.name)} />
+        clicked={(e) => this.openMenu(e, habit._id, habit.name)} />
     ));
 
     return (
@@ -208,13 +217,13 @@ class Manage extends Component {
               variant="contained"
               disableFocusRipple
               size="medium"
-              onClick={this.openAddDialogHandler}
+              onClick={this.openAddDialog}
             >
               <Add /> Add habit</Button>
           </div>
           <Dialog
             open={this.state.addDialogOpen}
-            onClose={this.closeAddDialogHandler}
+            onClose={this.closeAddDialog}
           >
             <DialogTitle>Habit creation</DialogTitle>
             <DialogContent>
@@ -256,15 +265,15 @@ class Manage extends Component {
             <Menu
               open={this.state.isMenuOpen}
               anchorEl={this.state.anchorEl}
-              onBackdropClick={this.closeMenuHandler}
+              onBackdropClick={this.closeMenu}
             >
-              <MenuItem onClick={this.openEditDialogHandler}>Edit</MenuItem>
-              <MenuItem onClick={this.openDeleteDialogHandler}>Delete</MenuItem>
+              <MenuItem onClick={this.openEditDialog}>Edit</MenuItem>
+              <MenuItem onClick={this.openDeleteDialog}>Delete</MenuItem>
             </Menu>
           </ul>
           <Dialog
             open={this.state.editDialogOpen}
-            onClose={this.closeEditDialogHandler}
+            onClose={this.closeEditDialog}
           >
             <DialogTitle>Edit habit</DialogTitle>
             <DialogContent>
@@ -296,7 +305,7 @@ class Manage extends Component {
           </Dialog>
           <Dialog
             open={this.state.deleteDialogOpen}
-            onClose={this.closeDeleteDialogHandler}
+            onClose={this.closeDeleteDialog}
           >
             <DialogTitle>{this.state.editHabitName ? this.state.editHabitName : <span>&nbsp;</span>}</DialogTitle>
             <DialogContent>

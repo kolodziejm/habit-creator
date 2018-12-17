@@ -62,9 +62,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) {
-      this.props.logoutUser();
-    }
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     axios.get('/habits')
       .then(res => {
         this.props.setHabits(res.data);
@@ -73,11 +71,13 @@ class Dashboard extends Component {
   }
 
   finishHabit = e => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     const { habitId } = this.state;
     axios.patch(`/habits/finish/${habitId}`)
       .then(res => {
         this.props.finishHabit(habitId);
-        this.closeFinishDialogHandler();
+        this.closeFinishDialog();
         this.openFinishSnackbar();
       })
       .catch(err => {
@@ -85,14 +85,16 @@ class Dashboard extends Component {
       })
   }
 
-  openFinishDialogHandler = habitId => {
+  openFinishDialog = habitId => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
     this.setState({
       finishDialogOpen: true,
       habitId
     })
   }
 
-  closeFinishDialogHandler = () => {
+  closeFinishDialog = () => {
     this.setState({
       finishDialogOpen: false,
       habitId: ''
@@ -111,7 +113,7 @@ class Dashboard extends Component {
         key={habit._id}
         name={habit.name}
         isFinished={habit.isFinished}
-        clicked={() => this.openFinishDialogHandler(habit._id)} />
+        clicked={() => this.openFinishDialog(habit._id)} />
     ));
 
     const finishedHabits = this.props.habits.habits.filter(habit => habit.isFinished).length;
@@ -159,7 +161,7 @@ class Dashboard extends Component {
           </ul>
           <Dialog
             open={this.state.finishDialogOpen}
-            onClose={this.closeFinishDialogHandler}
+            onClose={this.closeFinishDialog}
           >
             <DialogTitle>Reminder</DialogTitle>
             <DialogContent>
