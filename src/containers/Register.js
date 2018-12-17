@@ -49,9 +49,7 @@ class Register extends Component {
     };
     axios.post('/auth/register', registerData)
       .then(res => {
-        setTimeout(() => {
-          this.props.history.push('/');
-        }, 700)
+        this.props.history.push('/');
       })
       .catch(err => {
         this.setState({ errors: err.response.data.errObj, btnLoading: false });
