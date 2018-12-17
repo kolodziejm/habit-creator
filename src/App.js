@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, withRouter, Router } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import axios from './config/axios';
 import { connect } from 'react-redux';
@@ -16,16 +16,20 @@ import store from './store';
 
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
-if (localStorage.jwtToken) { // set user in store with decoded token data if token exists
-  const decodedData = jwtDecode(localStorage.jwtToken);
-  store.dispatch(setUser(decodedData));
-
-  if (decodedData.exp < Date.now() / 1000) { // unix in sec, Date obj in ms
-    store.dispatch(logoutUser());
-  }
-}
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    if (localStorage.jwtToken) { // set user in store with decoded token data if token exists
+      const decodedData = jwtDecode(localStorage.jwtToken);
+      if (decodedData.exp < Date.now() / 1000) { // unix in sec, Date obj in ms
+        store.dispatch(logoutUser(props.history, true));
+      } else {
+        store.dispatch(setUser(decodedData));
+      }
+    }
+  }
 
   render() {
     const { isAuthenticated } = this.props.auth;
@@ -46,12 +50,12 @@ class App extends Component {
     );
 
     return (
-      <BrowserRouter>
+      <Router history={this.props.history}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           {isAuthenticated ? authRoutes : unauthRoutes}
         </MuiThemeProvider>
-      </BrowserRouter>
+      </Router>
     );
   }
 }
@@ -60,4 +64,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withRouter(App));

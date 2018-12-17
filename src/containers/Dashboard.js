@@ -62,7 +62,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     axios.get('/habits')
       .then(res => {
         this.props.setHabits(res.data);
@@ -72,7 +72,7 @@ class Dashboard extends Component {
 
   finishHabit = e => {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     const { habitId } = this.state;
     axios.patch(`/habits/finish/${habitId}`)
       .then(res => {
@@ -87,7 +87,7 @@ class Dashboard extends Component {
 
   openFinishDialog = habitId => {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       finishDialogOpen: true,
       habitId

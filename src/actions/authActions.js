@@ -11,10 +11,11 @@ export const setUser = userData => dispatch => {
   })
 };
 
-export const logoutUser = history => dispatch => {
+export const logoutUser = (history, withMessage) => dispatch => {
   delete axios.defaults.headers.common['Authorization'];
   dispatch({
-    type: LOGOUT_USER
+    type: LOGOUT_USER,
+    withMessage
   })
   localStorage.removeItem('jwtToken');
   history ? history.push('/') : window.location.href = '/';

@@ -69,7 +69,7 @@ class Manage extends Component {
 
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
 
     axios.get('/habits')
       .then(res => this.props.setHabits(res.data))
@@ -80,7 +80,7 @@ class Manage extends Component {
 
   openMenu = (e, habitId, editHabitName) => {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       isMenuOpen: true,
       anchorEl: e.currentTarget,
@@ -100,7 +100,7 @@ class Manage extends Component {
 
   openAddDialog = e => {
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     if (this.props.habits.habits.length >= 10) return this.openErrorSnackbar();
     this.setState({
       addDialogOpen: true,
@@ -154,7 +154,7 @@ class Manage extends Component {
   addNewHabit = e => {
     e.preventDefault();
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     const { name } = this.state;
     const habitData = { name };
     axios.post('/habits', habitData)
@@ -169,7 +169,7 @@ class Manage extends Component {
   editHabit = e => {
     e.preventDefault();
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     const { editHabitName, habitId } = this.state;
     const habitData = { editHabitName };
     axios.patch(`/habits/${habitId}`, habitData)
@@ -184,7 +184,7 @@ class Manage extends Component {
   deleteHabit = e => {
     e.preventDefault();
     const token = jwtDecode(localStorage.jwtToken);
-    if (token.exp < Date.now() / 1000) return this.props.logoutUser();
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     const { habitId } = this.state;
     axios.delete(`/habits/${habitId}`)
       .then(res => {

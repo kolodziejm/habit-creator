@@ -2,7 +2,8 @@ import { SET_USER, LOGOUT_USER } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  expiredInfo: ''
 }
 
 export default (state = initialState, action) => {
@@ -18,7 +19,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: {},
-        isAuthenticated: false
+        isAuthenticated: false,
+        expiredInfo: action.withMessage ? 'Token has expired, log in again' : ''
       }
 
     default:
