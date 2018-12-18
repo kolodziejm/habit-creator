@@ -39,7 +39,6 @@ class App extends Component {
         <Route exact path="/" component={Dashboard} />
         <Route exact path="/manage" component={Manage} />
         <Route exact path="/shop" component={Shop} />
-        <Redirect to="/" />
       </Switch>
     );
 
@@ -47,7 +46,6 @@ class App extends Component {
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/register" component={Register} />
-        <Redirect to="/" />
       </Switch>
     );
 
