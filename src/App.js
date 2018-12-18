@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, withRouter, Router } from 'react-router-dom';
+import { Route, Switch, withRouter, Router, Redirect } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import axios from './config/axios';
 import { connect } from 'react-redux';
@@ -39,6 +39,7 @@ class App extends Component {
         <Route exact path="/" component={Dashboard} />
         <Route exact path="/manage" component={Manage} />
         <Route exact path="/shop" component={Shop} />
+        <Redirect to="/" />
       </Switch>
     );
 
@@ -46,6 +47,7 @@ class App extends Component {
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/register" component={Register} />
+        <Redirect to="/" />
       </Switch>
     );
 
