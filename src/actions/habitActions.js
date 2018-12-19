@@ -13,11 +13,13 @@ export const addHabit = habit => ({
   payload: habit
 })
 
-export const editHabit = (habitId, newName) => ({
+export const editHabit = (habitId, newName, newColor, newDiff) => ({
   type: EDIT_HABIT,
   payload: {
     habitId,
-    newName
+    newName,
+    newColor,
+    newDiff
   }
 });
 

@@ -22,8 +22,11 @@ export default (state = initialState, action) => {
 
     case EDIT_HABIT: {
       const habitsCopy = [...state.habits];
+      const { newName, newColor, newDiff } = action.payload;
       const habitIndex = habitsCopy.findIndex(habit => habit._id === action.payload.habitId);
-      habitsCopy[habitIndex].name = action.payload.newName;
+      habitsCopy[habitIndex].name = newName;
+      habitsCopy[habitIndex].color = newColor;
+      habitsCopy[habitIndex].difficulty = newDiff;
       return {
         ...state,
         habits: habitsCopy

@@ -105,16 +105,22 @@ class Manage extends Component {
 
   addDialogRadioHandler = e => this.setState({ difficulty: e.target.value });
 
+  editDialogRadioHandler = e => this.setState({ editHabitDiff: e.target.value });
+
   addDialogColorHandler = color => this.setState({ color: color.hex });
 
-  openMenu = (e, habitId, editHabitName) => {
+  editDialogColorHandler = color => this.setState({ editHabitColor: color.hex });
+
+  openMenu = (e, habitId, editHabitName, editHabitColor, editHabitDiff) => {
     const token = jwtDecode(localStorage.jwtToken);
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       isMenuOpen: true,
       anchorEl: e.currentTarget,
       habitId,
-      editHabitName
+      editHabitName,
+      editHabitColor,
+      editHabitDiff
     })
   }
 
@@ -201,11 +207,11 @@ class Manage extends Component {
     e.preventDefault();
     const token = jwtDecode(localStorage.jwtToken);
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
-    const { editHabitName, habitId } = this.state;
-    const habitData = { editHabitName };
+    const { editHabitName, habitId, editHabitColor, editHabitDiff } = this.state;
+    const habitData = { name: editHabitName, color: editHabitColor, difficulty: editHabitDiff };
     axios.patch(`/habits/${habitId}`, habitData)
       .then(res => {
-        this.props.editHabit(habitId, editHabitName);
+        this.props.editHabit(habitId, editHabitName, editHabitColor, editHabitDiff);
         this.closeEditDialog();
         this.openEditSnackbar();
       })
@@ -237,7 +243,7 @@ class Manage extends Component {
         difficulty={habit.difficulty}
         name={habit.name}
         streak={habit.streak}
-        clicked={(e) => this.openMenu(e, habit._id, habit.name)} />
+        clicked={(e) => this.openMenu(e, habit._id, habit.name, habit.color, habit.difficulty)} />
     ));
 
     return (
@@ -360,6 +366,44 @@ class Manage extends Component {
                   fullWidth
                   error={errors.editHabitName ? true : false}
                   helperText={errors.editHabitName ? errors.editHabitName : null}
+                />
+                <RadioGroup
+                  aria-label="difficulty"
+                  name="difficulty"
+                  className={classes.addDialogGroup}
+                  value={this.state.editHabitDiff}
+                  onChange={this.editDialogRadioHandler}
+                >
+                  <FormControlLabel
+                    value="easy"
+                    control={<Radio color="secondary" />}
+                    label="Easy"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                  <FormControlLabel
+                    value="medium"
+                    control={<Radio color="secondary" />}
+                    label="Medium"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                  <FormControlLabel
+                    value="hard"
+                    control={<Radio color="secondary" />}
+                    label="Hard"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                </RadioGroup>
+                <CirclePicker
+                  className={classes.colorPicker}
+                  circleSize={18}
+                  circleSpacing={12}
+                  width={"100%"}
+                  color={this.state.editHabitColor}
+                  colors={['#e91e63', '#673ab7', '#2196f3', '#009688', '#8bc34a', '#ff9800']}
+                  onChangeComplete={this.editDialogColorHandler}
                 />
               </form>
             </DialogContent>
