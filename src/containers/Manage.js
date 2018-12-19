@@ -186,8 +186,8 @@ class Manage extends Component {
     e.preventDefault();
     const token = jwtDecode(localStorage.jwtToken);
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
-    const { name } = this.state;
-    const habitData = { name };
+    const { name, color, difficulty } = this.state;
+    const habitData = { name, color, difficulty };
     axios.post('/habits', habitData)
       .then(res => {
         this.props.addHabit(res.data);
@@ -233,6 +233,8 @@ class Manage extends Component {
     const habitList = this.props.habits.habits.map((habit, index) => (
       <EditHabitItem
         key={habit._id}
+        color={habit.color}
+        difficulty={habit.difficulty}
         name={habit.name}
         streak={habit.streak}
         clicked={(e) => this.openMenu(e, habit._id, habit.name)} />

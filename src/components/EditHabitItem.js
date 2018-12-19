@@ -16,6 +16,17 @@ const styles = {
   },
   item: {
     marginBottom: '16px'
+  },
+  colorDot: {
+    width: 20,
+    height: 20,
+    borderRadius: '50%',
+    display: 'inline-block',
+    margin: '0 12px 0 0'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
@@ -28,12 +39,16 @@ class EditHabitItem extends Component {
       <li className={classes.item}>
         <Paper className={classes.paper}>
           <div className={classes.firstLineWrapper}>
-            <Typography variant="h6">{this.props.name}</Typography>
+            <span className={classes.title}>
+              <figure className={classes.colorDot} style={{ backgroundColor: this.props.color }}></figure>
+              <Typography variant="h6">{this.props.name}</Typography>
+            </span>
             <IconButton onClick={this.props.clicked} disableRipple>
               <Settings />
             </IconButton>
           </div>
-          <Typography variant="body2">Current streak: {this.props.streak} {this.props.streak === 1 ? ' day' : ' days'}</Typography>
+          <Typography variant="subtitle1">Current streak: {this.props.streak} {this.props.streak === 1 ? ' day' : ' days'}</Typography>
+          <Typography variant="body1">Difficulty: {this.props.difficulty}</Typography>
         </Paper>
       </li>
     )
