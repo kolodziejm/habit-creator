@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter, Router, Redirect } from 'react-router-dom';
+import { Route, Switch, withRouter, Router } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import axios from './config/axios';
 import { connect } from 'react-redux';

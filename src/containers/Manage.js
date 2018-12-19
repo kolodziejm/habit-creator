@@ -3,8 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from '../config/axios';
 import { withStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography, CircularProgress } from '@material-ui/core';
+import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography, CircularProgress, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+import { CirclePicker } from 'react-color';
 import theme from '../theme';
 
 import { setHabits, addHabit, deleteHabit, editHabit } from '../actions/habitActions';
@@ -35,6 +36,20 @@ const styles = {
     justifyContent: 'center',
     margin: '32px 0 32px 0'
   },
+  addDialogGroup: {
+    marginTop: 12,
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      flexDirection: 'row',
+    }
+  },
+  addDialogRadio: {
+    [theme.breakpoints.up('sm')]: {
+      '&:not(:last-child)': {
+        marginRight: 48
+      }
+    }
+  },
   addSnackbar: {
     backgroundColor: theme.palette.info.backgroundColor,
     color: theme.palette.info.color,
@@ -49,6 +64,9 @@ const styles = {
     backgroundColor: theme.palette.danger.backgroundColor,
     color: theme.palette.danger.color,
     padding: '8px 16px',
+  },
+  colorPicker: {
+    marginTop: 12
   }
 };
 
@@ -61,7 +79,11 @@ class Manage extends Component {
     anchorEl: null,
     habitId: '',
     editHabitName: '',
+    editHabitDiff: '',
+    editHabitColor: '',
     name: '',
+    difficulty: 'medium',
+    color: '#e91e63',
     addDialogOpen: false,
     addSnackbarOpen: false,
     editDialogOpen: false,
@@ -80,6 +102,10 @@ class Manage extends Component {
   }
 
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
+
+  addDialogRadioHandler = e => this.setState({ difficulty: e.target.value });
+
+  addDialogColorHandler = color => this.setState({ color: color.hex });
 
   openMenu = (e, habitId, editHabitName) => {
     const token = jwtDecode(localStorage.jwtToken);
@@ -245,6 +271,43 @@ class Manage extends Component {
                   fullWidth
                   error={errors.name ? true : false}
                   helperText={errors.name ? errors.name : null}
+                />
+                <RadioGroup
+                  aria-label="difficulty"
+                  name="difficulty"
+                  className={classes.addDialogGroup}
+                  value={this.state.difficulty}
+                  onChange={this.addDialogRadioHandler}
+                >
+                  <FormControlLabel
+                    value="easy"
+                    control={<Radio color="secondary" />}
+                    label="Easy"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                  <FormControlLabel
+                    value="medium"
+                    control={<Radio color="secondary" />}
+                    label="Medium"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                  <FormControlLabel
+                    value="hard"
+                    control={<Radio color="secondary" />}
+                    label="Hard"
+                    labelPlacement="end"
+                    className={classes.addDialogRadio}
+                  />
+                </RadioGroup>
+                <CirclePicker
+                  className={classes.colorPicker}
+                  circleSize={24}
+                  circleSpacing={12}
+                  width={"100%"}
+                  colors={['#e91e63', '#673ab7', '#2196f3', '#009688', '#8bc34a', '#ff9800']}
+                  onChangeComplete={this.addDialogColorHandler}
                 />
               </form>
             </DialogContent>
