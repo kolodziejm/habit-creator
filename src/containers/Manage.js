@@ -134,6 +134,8 @@ class Manage extends Component {
     this.setState({
       addDialogOpen: true,
       name: '',
+      difficulty: 'medium',
+      color: '#e91e63',
       errors: {}
     })
   }
@@ -303,9 +305,10 @@ class Manage extends Component {
                 </RadioGroup>
                 <CirclePicker
                   className={classes.colorPicker}
-                  circleSize={24}
+                  circleSize={18}
                   circleSpacing={12}
                   width={"100%"}
+                  color={this.state.color}
                   colors={['#e91e63', '#673ab7', '#2196f3', '#009688', '#8bc34a', '#ff9800']}
                   onChangeComplete={this.addDialogColorHandler}
                 />
