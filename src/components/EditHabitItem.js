@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography, IconButton } from '@material-ui/core';
-import { Settings } from '@material-ui/icons';
+import { MoreVert } from '@material-ui/icons';
 
 const styles = {
   paper: {
@@ -45,7 +45,7 @@ class EditHabitItem extends Component {
               <Typography variant="h6">{this.props.name}</Typography>
             </span>
             <IconButton onClick={this.props.clicked} disableRipple>
-              <Settings />
+              <MoreVert />
             </IconButton>
           </div>
           <Typography variant="subtitle1">Current streak: {this.props.streak} {this.props.streak === 1 ? ' day' : ' days'}</Typography>

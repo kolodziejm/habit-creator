@@ -1,6 +1,3 @@
-import dispatch from 'redux-thunk';
-import axios from '../config/axios';
-
 import { SET_HABITS, ADD_HABIT, DELETE_HABIT, EDIT_HABIT, FINISH_HABIT } from './types';
 
 export const setHabits = habits => ({
