@@ -14,6 +14,9 @@ import Navbar from '../components/Navbar';
 import FinishHabitItem from '../components/FinishHabitItem';
 import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, Snackbar } from '@material-ui/core';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import '../animations/fade.css';
+
 const styles = {
   list: {
     listStyleType: 'none',
@@ -141,26 +144,34 @@ class Dashboard extends Component {
                   strokeColor={theme.palette.secondary.main} />
               </div>
             </> : null}
+          {this.props.habits.loading ?
+            <div className={classes.loadingWrapper}>
+              <CircularProgress style={{ width: 60, height: 60 }} />
+            </div> : habitList.length === 0 ?
+              <div className={classes.noActiveHabits}>
+                <Typography variant="h5" align="center">You currently don't have any active habits</Typography>
+                <div className={classes.linkBtnWrapper}>
+                  <Button
+                    component={Link} to="/manage"
+                    color="secondary"
+                    variant="contained"
+                    size="medium"
+                  >
+                    Add some here!
+              </Button>
+                </div>
+              </div> : null}
           <ul className={classes.list}>
-            {this.props.habits.loading ?
-              <div className={classes.loadingWrapper}>
-                <CircularProgress style={{ width: 60, height: 60 }} />
-              </div>
-              : habitList.length > 0 ?
-                habitList :
-                <div className={classes.noActiveHabits}>
-                  <Typography variant="h5" align="center">You currently don't have any active habits</Typography>
-                  <div className={classes.linkBtnWrapper}>
-                    <Button
-                      component={Link} to="/manage"
-                      color="secondary"
-                      variant="contained"
-                      size="medium"
-                    >
-                      Add some here!
-                  </Button>
-                  </div>
-                </div>}
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={300}
+              component={React.Fragment}
+              transitionAppear={true}
+              transitionAppearTimeout={200}
+            >
+              {habitList}
+            </ReactCSSTransitionGroup>
           </ul>
           <Dialog
             open={this.state.finishDialogOpen}

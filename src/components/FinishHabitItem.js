@@ -27,7 +27,8 @@ const styles = {
     height: 20,
     borderRadius: '50%',
     display: 'inline-block',
-    margin: '0 12px 0 0'
+    margin: '0 12px 0 0',
+    flexShrink: 0
   },
   title: {
     display: 'flex',

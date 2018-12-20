@@ -156,6 +156,7 @@ class Manage extends Component {
       editDialogOpen: true,
       isMenuOpen: false,
       anchorEl: null,
+      errors: {}
     })
   }
 
@@ -211,7 +212,7 @@ class Manage extends Component {
     const token = jwtDecode(localStorage.jwtToken);
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     const { editHabitName, habitId, editHabitColor, editHabitDiff } = this.state;
-    const habitData = { name: editHabitName, color: editHabitColor, difficulty: editHabitDiff };
+    const habitData = { editHabitName, editHabitColor, editHabitDiff };
     axios.patch(`/habits/${habitId}`, habitData)
       .then(res => {
         this.props.editHabit(habitId, editHabitName, editHabitColor, editHabitDiff);
@@ -344,7 +345,7 @@ class Manage extends Component {
             <ReactCSSTransitionGroup
               transitionName="fade"
               transitionEnterTimeout={400}
-              transitionLeaveTimeout={200}
+              transitionLeaveTimeout={300}
               component={React.Fragment}
               transitionAppear={true}
               transitionAppearTimeout={200}
