@@ -16,6 +16,9 @@ import EditHabitItem from '../components/EditHabitItem';
 
 import jwtDecode from 'jwt-decode';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import '../animations/fade.css';
+
 const styles = {
   list: {
     listStyleType: 'none',
@@ -337,8 +340,17 @@ class Manage extends Component {
             {this.props.habits.loading ?
               <div className={classes.loadingWrapper}>
                 <CircularProgress style={{ width: 60, height: 60 }} />
-              </div>
-              : habitList}
+              </div> : null}
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={200}
+              component={React.Fragment}
+              transitionAppear={true}
+              transitionAppearTimeout={200}
+            >
+              {habitList}
+            </ReactCSSTransitionGroup>
             <Menu
               open={this.state.isMenuOpen}
               anchorEl={this.state.anchorEl}

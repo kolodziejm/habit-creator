@@ -113,6 +113,7 @@ class Dashboard extends Component {
       <FinishHabitItem
         key={habit._id}
         name={habit.name}
+        color={habit.color}
         isFinished={habit.isFinished}
         clicked={() => this.openFinishDialog(habit._id)} />
     ));
@@ -145,7 +146,8 @@ class Dashboard extends Component {
               <div className={classes.loadingWrapper}>
                 <CircularProgress style={{ width: 60, height: 60 }} />
               </div>
-              : habitList.length > 0 ? habitList :
+              : habitList.length > 0 ?
+                habitList :
                 <div className={classes.noActiveHabits}>
                   <Typography variant="h5" align="center">You currently don't have any active habits</Typography>
                   <div className={classes.linkBtnWrapper}>

@@ -16,11 +16,22 @@ const styles = {
     justifyContent: 'space-between'
   },
   item: {
-    marginBottom: '16px'
+    marginBottom: '16px',
   },
   textHabitFinished: {
     textDecoration: 'line-through',
     color: '#d3d3d3'
+  },
+  colorDot: {
+    width: 20,
+    height: 20,
+    borderRadius: '50%',
+    display: 'inline-block',
+    margin: '0 12px 0 0'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
@@ -34,7 +45,8 @@ class FinishHabitItem extends Component {
         <Paper className={classes.paper}>
           <div className={classes.firstLineWrapper}>
             <Typography variant="h6"
-              className={classnames(isFinished ? classes.textHabitFinished : null)}>
+              className={classnames(classes.title, isFinished ? classes.textHabitFinished : null)}>
+              <figure className={classes.colorDot} style={{ backgroundColor: this.props.color }}></figure>
               {this.props.name}
             </Typography>
             {!isFinished ? <IconButton onClick={this.props.clicked} disableRipple>
