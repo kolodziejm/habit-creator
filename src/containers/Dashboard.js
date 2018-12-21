@@ -130,12 +130,12 @@ class Dashboard extends Component {
         <main>
           {this.props.habits.habits.length > 0 ?
             <>
-              <div className={classes.titleWrapper}>
+              <header className={classes.titleWrapper}>
                 <Typography variant="h4" align="center">Today's progress</Typography>
                 <Typography variant="h5" align="center">
                   {completedPercent !== 'NaN' ? <span>{completedPercent}%</span> : <span>&nbsp;</span>}
                 </Typography>
-              </div>
+              </header>
               <div className={classes.progressWrapper}>
                 <Line
                   percent={completedPercent !== 'NaN' ? completedPercent : 0}

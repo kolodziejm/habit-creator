@@ -6,4 +6,7 @@ export const SET_HABITS = 'SET_HABITS';
 export const ADD_HABIT = 'ADD_HABIT';
 export const EDIT_HABIT = 'EDIT_HABIT';
 export const DELETE_HABIT = 'DELETE_HABIT';
-export const FINISH_HABIT = 'FINISH_HABIT'; 
+export const FINISH_HABIT = 'FINISH_HABIT';
+
+export const SET_SHOP = 'SET_SHOP';
+export const ADD_REWARD = 'ADD_REWARD'
