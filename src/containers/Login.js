@@ -69,7 +69,7 @@ class Login extends Component {
         const decodedData = jwtDecode(token);
         this.props.setUser(decodedData);
       })
-      .catch(err => this.setState({ errors: err.response.data.errObj, btnLoading: false }));
+      .catch(err => this.setState({ errors: err.response.data, btnLoading: false }));
   }
 
   render() {

@@ -204,7 +204,7 @@ class Manage extends Component {
         this.closeAddDialog();
         this.openAddSnackbar();
       })
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ errors: err.response.data }));
   }
 
   editHabit = e => {
@@ -219,7 +219,7 @@ class Manage extends Component {
         this.closeEditDialog();
         this.openEditSnackbar();
       })
-      .catch(err => this.setState({ errors: err.response.data.errObj }))
+      .catch(err => this.setState({ errors: err.response.data }))
   }
 
   deleteHabit = e => {
@@ -233,7 +233,7 @@ class Manage extends Component {
         this.closeDeleteDialog();
         this.openDeleteSnackbar();
       })
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ errors: err.response.data }));
   }
 
   render() {

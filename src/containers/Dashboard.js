@@ -71,7 +71,7 @@ class Dashboard extends Component {
       .then(res => {
         this.props.setHabits(res.data);
       })
-      .catch(err => this.setState({ errors: err }))
+      .catch(err => this.setState({ errors: err.response.data }))
   }
 
   finishHabit = e => {
@@ -85,7 +85,7 @@ class Dashboard extends Component {
         this.openFinishSnackbar();
       })
       .catch(err => {
-        console.log(err);
+        this.setState({ errors: err.response.data })
       })
   }
 

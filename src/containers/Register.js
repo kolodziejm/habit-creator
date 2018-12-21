@@ -52,7 +52,7 @@ class Register extends Component {
         this.props.history.push('/');
       })
       .catch(err => {
-        this.setState({ errors: err.response.data.errObj, btnLoading: false });
+        this.setState({ errors: err.response.data, btnLoading: false });
       });
   }
 
