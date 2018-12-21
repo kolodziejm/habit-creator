@@ -10,8 +10,10 @@ import { logoutUser } from '../actions/authActions';
 
 import theme from '../theme';
 
+import Reward from '../components/Reward';
+
 import Navbar from '../components/Navbar';
-import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, Snackbar, TextField } from '@material-ui/core';
+import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, Snackbar, TextField, Grid } from '@material-ui/core';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import '../animations/fade.css';
@@ -44,6 +46,19 @@ const styles = {
     justifyContent: 'center',
     marginTop: 16
   },
+  rewardsGridContainer: {
+    marginTop: 32,
+    marginRight: 0,
+    padding: 0,
+  },
+  rewardsGridItem: {
+
+  },
+  main: {
+    margin: '0 auto',
+    maxWidth: 1136,
+    padding: '0 16px'
+  }
 };
 
 class Shop extends Component {
@@ -111,10 +126,28 @@ class Shop extends Component {
     const { errors } = this.state;
     const { rewards, coins } = this.props.shop;
 
+    const rewardsList = rewards.map(reward => (
+      <Grid
+        key={reward._id}
+        item={true}
+        className={classes.rewardsGridItem}
+        xs={12}
+        sm={6}
+        md={4}
+      >
+        <Reward
+          title={reward.title}
+          price={reward.price}
+          description={reward.description}
+          imageUrl={reward.imageUrl}
+        />
+      </Grid >
+    ));
+
     return (
       <>
         <Navbar navValue={2} />
-        <main>
+        <main className={classes.main}>
           <header className={classes.titleWrapper}>
             <Typography variant="h5" align="center">You have: {coins} coins</Typography>
           </header>
@@ -128,6 +161,13 @@ class Shop extends Component {
             >
               <Add /> Create reward</Button>
           </div>
+          <Grid
+            container={true}
+            className={classes.rewardsGridContainer}
+            spacing={16}
+          >
+            {rewardsList}
+          </Grid>
           <Dialog
             open={this.state.addDialogOpen}
             onClose={this.closeAddDialog}
