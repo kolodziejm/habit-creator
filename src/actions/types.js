@@ -12,3 +12,4 @@ export const SET_SHOP = 'SET_SHOP';
 export const ADD_REWARD = 'ADD_REWARD'
 export const EDIT_REWARD = 'EDIT_REWARD';
 export const DELETE_REWARD = 'DELETE_REWARD';
+export const UPDATE_COINS = 'UPDATE_COINS';

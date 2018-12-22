@@ -6,6 +6,7 @@ import jwtDecode from 'jwt-decode';
 import axios from '../config/axios';
 import { setHabits, finishHabit } from '../actions/habitActions';
 import { logoutUser } from '../actions/authActions';
+import { updateCoins } from '../actions/shopActions';
 
 import theme from '../theme';
 
@@ -81,6 +82,7 @@ class Dashboard extends Component {
     axios.patch(`/habits/finish/${habitId}`)
       .then(res => {
         this.props.finishHabit(habitId);
+        this.props.updateCoins(res.data.coins);
         this.closeFinishDialog();
         this.openFinishSnackbar();
       })
@@ -216,4 +218,4 @@ const mapStateToProps = state => ({
   habits: state.habit
 });
 
-export default connect(mapStateToProps, { logoutUser, setHabits, finishHabit })(withRouter(withStyles(styles)(Dashboard)));
+export default connect(mapStateToProps, { logoutUser, setHabits, finishHabit, updateCoins })(withRouter(withStyles(styles)(Dashboard)));

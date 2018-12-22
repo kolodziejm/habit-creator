@@ -1,4 +1,4 @@
-import { SET_SHOP, ADD_REWARD, EDIT_REWARD, DELETE_REWARD } from '../actions/types';
+import { SET_SHOP, ADD_REWARD, EDIT_REWARD, DELETE_REWARD, UPDATE_COINS } from '../actions/types';
 
 const initialState = {
   rewards: [],
@@ -40,6 +40,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         rewards: state.rewards.filter(reward => reward._id !== action.id)
+      }
+
+    case UPDATE_COINS:
+      return {
+        ...state,
+        coins: action.coins
       }
 
     default:

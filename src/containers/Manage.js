@@ -152,6 +152,8 @@ class Manage extends Component {
   closeAddDialog = e => this.setState({ addDialogOpen: false })
 
   openEditDialog = e => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       editDialogOpen: true,
       isMenuOpen: false,
@@ -166,6 +168,8 @@ class Manage extends Component {
   }
 
   openDeleteDialog = e => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       deleteDialogOpen: true,
       isMenuOpen: false,

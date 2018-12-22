@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import jwtDecode from 'jwt-decode';
 import axios from '../config/axios';
 import { Add } from '@material-ui/icons';
-import { setShop, addReward, editReward, deleteReward } from '../actions/shopActions';
+import { setShop, addReward, editReward, deleteReward, updateCoins } from '../actions/shopActions';
 import { logoutUser } from '../actions/authActions';
 
 import theme from '../theme';
@@ -78,12 +78,16 @@ class Shop extends Component {
     editPrice: '',
     editDescription: '',
     editImageUrl: '',
+    buyTitle: '',
+    buyPrice: '',
     errors: {},
     errorSnackbarOpen: false,
     addDialogOpen: false,
     addSnackbarOpen: false,
     editDialogOpen: false,
-    editSnackbarOpen: false
+    editSnackbarOpen: false,
+    buyDialogOpen: false,
+    buySnackbarOpen: false
   }
 
   componentDidMount() {
@@ -140,6 +144,18 @@ class Shop extends Component {
       .catch(err => this.setState({ errors: err.response.data }));
   }
 
+  buyReward = () => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
+    axios.patch(`/shop/buy/${this.state.id}`)
+      .then(res => {
+        // Successfully purchased snackbar
+        this.props.updateCoins(this.props.shop.coins - this.state.buyPrice);
+        this.closeBuyDialog();
+      })
+      .catch(err => this.setState({ errors: err.response.data }));
+  };
+
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
 
   openAddDialog = e => {
@@ -158,6 +174,8 @@ class Shop extends Component {
   }
 
   openEditDialog = (id, title, price, description, imageUrl) => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     this.setState({
       id,
       editTitle: title,
@@ -169,9 +187,27 @@ class Shop extends Component {
     })
   };
 
-  closeAddDialog = e => this.setState({ addDialogOpen: false })
+  openBuyDialog = (id, title, price) => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
+    if (price > this.props.shop.coins) {
+      return this.setState({
+        // error snackbar - you don't have enough coins!
+      });
+    }
+    this.setState({
+      id,
+      buyTitle: title,
+      buyPrice: price,
+      buyDialogOpen: true
+    });
+  }
+
+  closeAddDialog = e => this.setState({ addDialogOpen: false });
 
   closeEditDialog = e => this.setState({ editDialogOpen: false });
+
+  closeBuyDialog = e => this.setState({ buyDialogOpen: false });
 
 
   render() {
@@ -194,6 +230,7 @@ class Shop extends Component {
           description={reward.description}
           imageUrl={reward.imageUrl}
           edit={() => this.openEditDialog(reward._id, reward.title, reward.price, reward.description, reward.imageUrl)}
+          buy={() => this.openBuyDialog(reward._id, reward.title, reward.price)}
         />
       </Grid >
     ));
@@ -359,6 +396,23 @@ class Shop extends Component {
             </Button>
             </DialogActions>
           </Dialog>
+          <Dialog
+            aria-labelledby="Buy Reward"
+            open={this.state.buyDialogOpen}
+            onClose={this.closeBuyDialog}
+          >
+            <DialogTitle>Buy Reward</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to buy <strong>{this.state.buyTitle}</strong> for <strong>{this.state.buyPrice} coins</strong>?
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.buyReward} color="secondary" variant="contained">
+                Confirm purchase
+            </Button>
+            </DialogActions>
+          </Dialog>
         </main>
       </>
     )
@@ -369,4 +423,4 @@ const mapStateToProps = state => ({
   shop: state.shop
 });
 
-export default connect(mapStateToProps, { logoutUser, setShop, addReward, editReward, deleteReward })(withRouter(withStyles(styles)(Shop)));
+export default connect(mapStateToProps, { logoutUser, setShop, addReward, editReward, deleteReward, updateCoins })(withRouter(withStyles(styles)(Shop)));
