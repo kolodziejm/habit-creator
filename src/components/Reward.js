@@ -57,11 +57,12 @@ const reward = props => {
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button
-            onClick={props.clicked}
+            onClick={props.buy}
             variant="contained"
             size="small"
             color="secondary">Buy</Button>
           <Button
+            onClick={props.edit}
             variant="outlined"
             size="small"
             color="secondary">Edit</Button>

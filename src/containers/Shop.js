@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import jwtDecode from 'jwt-decode';
 import axios from '../config/axios';
 import { Add } from '@material-ui/icons';
-import { setShop, addReward } from '../actions/shopActions';
+import { setShop, addReward, editReward, deleteReward } from '../actions/shopActions';
 import { logoutUser } from '../actions/authActions';
 
 import theme from '../theme';
@@ -41,6 +41,11 @@ const styles = {
     color: theme.palette.info.color,
     padding: '8px 16px',
   },
+  danger: {
+    backgroundColor: theme.palette.danger.backgroundColor,
+    color: theme.palette.danger.color,
+    padding: '8px 16px',
+  },
   addBtnContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -58,7 +63,7 @@ const styles = {
     margin: '0 auto',
     maxWidth: 1136,
     padding: '0 16px'
-  }
+  },
 };
 
 class Shop extends Component {
@@ -68,10 +73,17 @@ class Shop extends Component {
     price: '',
     description: '',
     imageUrl: '',
+    id: '',
+    editTitle: '',
+    editPrice: '',
+    editDescription: '',
+    editImageUrl: '',
     errors: {},
     errorSnackbarOpen: false,
     addDialogOpen: false,
     addSnackbarOpen: false,
+    editDialogOpen: false,
+    editSnackbarOpen: false
   }
 
   componentDidMount() {
@@ -102,6 +114,32 @@ class Shop extends Component {
       .catch(err => this.setState({ errors: err.response.data }));
   }
 
+  editReward = () => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
+    const { editTitle, editPrice, editDescription, editImageUrl } = this.state;
+    const rewardData = { editTitle, editPrice }
+    if (editDescription !== '') rewardData.editDescription = editDescription;
+    if (editImageUrl !== '') rewardData.editImageUrl = editImageUrl;
+    axios.patch(`/shop/edit/${this.state.id}`, rewardData)
+      .then(res => {
+        this.props.editReward(this.state.id, editTitle, editPrice, editDescription, editImageUrl);
+        this.closeEditDialog();
+      })
+      .catch(err => this.setState({ errors: err.response.data }));
+  }
+
+  deleteReward = () => {
+    const token = jwtDecode(localStorage.jwtToken);
+    if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
+    axios.delete(`/shop/delete/${this.state.id}`)
+      .then(res => {
+        this.props.deleteReward(this.state.id);
+        this.closeEditDialog();
+      })
+      .catch(err => this.setState({ errors: err.response.data }));
+  }
+
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
 
   openAddDialog = e => {
@@ -110,6 +148,7 @@ class Shop extends Component {
     if (this.props.shop.rewards.length >= 20) return this.openErrorSnackbar();
     this.setState({
       addDialogOpen: true,
+      id: '',
       title: '',
       price: '',
       description: '',
@@ -118,7 +157,21 @@ class Shop extends Component {
     })
   }
 
+  openEditDialog = (id, title, price, description, imageUrl) => {
+    this.setState({
+      id,
+      editTitle: title,
+      editPrice: price,
+      editDescription: description ? description : '',
+      editImageUrl: imageUrl ? imageUrl : '',
+      editDialogOpen: true,
+      errors: {},
+    })
+  };
+
   closeAddDialog = e => this.setState({ addDialogOpen: false })
+
+  closeEditDialog = e => this.setState({ editDialogOpen: false });
 
 
   render() {
@@ -140,6 +193,7 @@ class Shop extends Component {
           price={reward.price}
           description={reward.description}
           imageUrl={reward.imageUrl}
+          edit={() => this.openEditDialog(reward._id, reward.title, reward.price, reward.description, reward.imageUrl)}
         />
       </Grid >
     ));
@@ -169,6 +223,7 @@ class Shop extends Component {
             {rewardsList}
           </Grid>
           <Dialog
+            aria-labelledby="Reward Creation"
             open={this.state.addDialogOpen}
             onClose={this.closeAddDialog}
           >
@@ -235,6 +290,75 @@ class Shop extends Component {
             </Button>
             </DialogActions>
           </Dialog>
+          <Dialog
+            aria-labelledby="Edit Reward"
+            open={this.state.editDialogOpen}
+            onClose={this.closeEditDialog}
+          >
+            <DialogTitle>Edit Reward</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Fields marked with * are required.
+            </DialogContentText>
+              <form onSubmit={this.addNewReward}>
+                <input type="submit" style={{ visibility: 'hidden' }} />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.editTitle}
+                  autoFocus
+                  type="text"
+                  label="Reward title*"
+                  name="editTitle"
+                  margin="dense"
+                  fullWidth
+                  error={errors.editTitle ? true : false}
+                  helperText={errors.editTitle ? errors.editTitle : null}
+                />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.editPrice}
+                  type="number"
+                  label="Reward price*"
+                  name="editPrice"
+                  margin="dense"
+                  fullWidth
+                  error={errors.editPrice ? true : false}
+                  helperText={errors.editPrice ? errors.editPrice : null}
+                  inputProps={{ min: 1, max: 1000000 }}
+                />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.editDescription}
+                  type="text"
+                  label="Reward description"
+                  name="editDescription"
+                  margin="dense"
+                  fullWidth
+                  error={errors.editDescription ? true : false}
+                  helperText={errors.editDescription ? errors.editDescription : null}
+                />
+                <TextField
+                  onChange={this.inputChangedHandler}
+                  value={this.state.editImageUrl}
+                  type="url"
+                  label="Reward image URL"
+                  name="editImageUrl"
+                  margin="dense"
+                  fullWidth
+                  error={errors.editImageUrl ? true : false}
+                  helperText={errors.editImageUrl ? errors.editImageUrl : null}
+                />
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.deleteReward} className={classes.danger} variant="contained">
+                Delete
+            </Button>
+              <Button onClick={this.editReward} color="secondary" variant="contained" size="large">
+                Edit
+            </Button>
+            </DialogActions>
+          </Dialog>
         </main>
       </>
     )
@@ -245,4 +369,4 @@ const mapStateToProps = state => ({
   shop: state.shop
 });
 
-export default connect(mapStateToProps, { logoutUser, setShop, addReward })(withRouter(withStyles(styles)(Shop)));
+export default connect(mapStateToProps, { logoutUser, setShop, addReward, editReward, deleteReward })(withRouter(withStyles(styles)(Shop)));

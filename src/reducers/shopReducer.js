@@ -1,4 +1,4 @@
-import { SET_SHOP, ADD_REWARD } from '../actions/types';
+import { SET_SHOP, ADD_REWARD, EDIT_REWARD, DELETE_REWARD } from '../actions/types';
 
 const initialState = {
   rewards: [],
@@ -20,6 +20,26 @@ export default (state = initialState, action) => {
       return {
         ...state,
         rewards: [action.reward, ...state.rewards]
+      }
+
+    case EDIT_REWARD: {
+      const rewardsCopy = [...state.rewards];
+      const { title, price, description, imageUrl } = action.payload;
+      const rewardIndex = rewardsCopy.findIndex(reward => reward._id === action.payload.id);
+      rewardsCopy[rewardIndex].title = title;
+      rewardsCopy[rewardIndex].price = price;
+      rewardsCopy[rewardIndex].description = description;
+      rewardsCopy[rewardIndex].imageUrl = imageUrl;
+      return {
+        ...state,
+        rewards: rewardsCopy
+      }
+    }
+
+    case DELETE_REWARD:
+      return {
+        ...state,
+        rewards: state.rewards.filter(reward => reward._id !== action.id)
       }
 
     default:

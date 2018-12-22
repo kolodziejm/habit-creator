@@ -10,3 +10,5 @@ export const FINISH_HABIT = 'FINISH_HABIT';
 
 export const SET_SHOP = 'SET_SHOP';
 export const ADD_REWARD = 'ADD_REWARD'
+export const EDIT_REWARD = 'EDIT_REWARD';
+export const DELETE_REWARD = 'DELETE_REWARD';
