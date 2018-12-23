@@ -132,7 +132,6 @@ class Manage extends Component {
       isMenuOpen: false,
       anchorEl: null,
       habitId: '',
-      editHabitName: ''
     });
   }
 
@@ -466,7 +465,7 @@ class Manage extends Component {
             open={this.state.errorSnackbarOpen}
             autoHideDuration={5000}
             onClose={this.closeErrorSnackbar}
-            message="Maximum of 10 habits are allowed"
+            message="Maximum of 10 habits are allowed."
           />
           <Snackbar
             ContentProps={{
@@ -478,7 +477,7 @@ class Manage extends Component {
             open={this.state.addSnackbarOpen || this.state.editSnackbarOpen}
             autoHideDuration={5000}
             onClose={this.closeAddAndEditSnackbar}
-            message={this.state.addSnackbarOpen ? "Habit successfully added!" : this.state.editSnackbarOpen ? "Habit successfully edited!" : null}
+            message={this.state.addSnackbarOpen ? "Habit successfully added." : this.state.editSnackbarOpen ? "Habit successfully edited." : null}
           />
           <Snackbar
             ContentProps={{
@@ -490,7 +489,7 @@ class Manage extends Component {
             open={this.state.deleteSnackbarOpen}
             autoHideDuration={5000}
             onClose={this.closeDeleteSnackbar}
-            message="Habit successfully deleted!"
+            message="Habit successfully deleted."
           />
         </main>
       </>

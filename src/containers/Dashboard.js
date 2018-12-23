@@ -60,10 +60,11 @@ const styles = {
 class Dashboard extends Component {
 
   state = {
-    finishSnackbarOpen: false,
+    infoSnackbarOpen: false,
+    infoSnackbarMessage: '',
     finishDialogOpen: false,
     habitId: ''
-  }
+  };
 
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
@@ -73,7 +74,7 @@ class Dashboard extends Component {
         this.props.setHabits(res.data);
       })
       .catch(err => this.setState({ errors: err.response.data }))
-  }
+  };
 
   finishHabit = e => {
     const token = jwtDecode(localStorage.jwtToken);
@@ -84,12 +85,12 @@ class Dashboard extends Component {
         this.props.finishHabit(habitId);
         this.props.updateCoins(res.data.coins);
         this.closeFinishDialog();
-        this.openFinishSnackbar();
+        this.openFinishSnackbar(res.data.value, res.data.bonus);
       })
       .catch(err => {
         this.setState({ errors: err.response.data })
       })
-  }
+  };
 
   openFinishDialog = habitId => {
     const token = jwtDecode(localStorage.jwtToken);
@@ -98,18 +99,24 @@ class Dashboard extends Component {
       finishDialogOpen: true,
       habitId
     })
-  }
+  };
 
   closeFinishDialog = () => {
     this.setState({
       finishDialogOpen: false,
       habitId: ''
     })
-  }
+  };
 
-  openFinishSnackbar = () => this.setState({ finishSnackbarOpen: true })
+  openFinishSnackbar = (value, bonus) => {
+    const sentenceEnding = bonus > 0 ? ` + ${bonus} coins as a streak bonus!` : '.';
+    this.setState({
+      infoSnackbarOpen: true,
+      infoSnackbarMessage: `Well done! You've earned ${value} coins${sentenceEnding}`
+    })
+  };
 
-  closeFinishSnackbar = () => this.setState({ finishSnackbarOpen: false })
+  closeFinishSnackbar = () => this.setState({ infoSnackbarOpen: false })
 
   render() {
     const { classes } = this.props;
@@ -203,10 +210,10 @@ class Dashboard extends Component {
               }
             }}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            open={this.state.finishSnackbarOpen}
+            open={this.state.infoSnackbarOpen}
             autoHideDuration={5000}
             onClose={this.closeFinishSnackbar}
-            message="Well done!"
+            message={this.state.infoSnackbarMessage}
           />
         </main>
       </>

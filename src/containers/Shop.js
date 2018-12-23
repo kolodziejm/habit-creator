@@ -41,6 +41,11 @@ const styles = {
     color: theme.palette.info.color,
     padding: '8px 16px',
   },
+  error: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+    padding: '8px 16px',
+  },
   danger: {
     backgroundColor: theme.palette.danger.backgroundColor,
     color: theme.palette.danger.color,
@@ -82,12 +87,14 @@ class Shop extends Component {
     buyPrice: '',
     errors: {},
     errorSnackbarOpen: false,
+    errorSnackbarMessage: '',
+    dangerSnackbarOpen: false,
+    dangerSnackbarMessage: '',
+    infoSnackbarOpen: false,
+    infoSnackbarMessage: '',
     addDialogOpen: false,
-    addSnackbarOpen: false,
     editDialogOpen: false,
-    editSnackbarOpen: false,
     buyDialogOpen: false,
-    buySnackbarOpen: false
   }
 
   componentDidMount() {
@@ -113,7 +120,10 @@ class Shop extends Component {
       .then(res => {
         this.props.addReward(res.data);
         this.closeAddDialog();
-        // this.openAddSnackbar();
+        this.setState({
+          infoSnackbarOpen: true,
+          infoSnackbarMessage: 'Reward successfully added.'
+        });
       })
       .catch(err => this.setState({ errors: err.response.data }));
   }
@@ -129,6 +139,10 @@ class Shop extends Component {
       .then(res => {
         this.props.editReward(this.state.id, editTitle, editPrice, editDescription, editImageUrl);
         this.closeEditDialog();
+        this.setState({
+          infoSnackbarOpen: true,
+          infoSnackbarMessage: 'Reward successfully edited.'
+        });
       })
       .catch(err => this.setState({ errors: err.response.data }));
   }
@@ -140,6 +154,10 @@ class Shop extends Component {
       .then(res => {
         this.props.deleteReward(this.state.id);
         this.closeEditDialog();
+        this.setState({
+          dangerSnackbarOpen: true,
+          dangerSnackbarMessage: 'Reward deleted.'
+        });
       })
       .catch(err => this.setState({ errors: err.response.data }));
   }
@@ -149,9 +167,12 @@ class Shop extends Component {
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     axios.patch(`/shop/buy/${this.state.id}`)
       .then(res => {
-        // Successfully purchased snackbar
         this.props.updateCoins(this.props.shop.coins - this.state.buyPrice);
         this.closeBuyDialog();
+        this.setState({
+          infoSnackbarOpen: true,
+          infoSnackbarMessage: 'Reward purchased. Enjoy it :)'
+        });
       })
       .catch(err => this.setState({ errors: err.response.data }));
   };
@@ -192,7 +213,8 @@ class Shop extends Component {
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     if (price > this.props.shop.coins) {
       return this.setState({
-        // error snackbar - you don't have enough coins!
+        errorSnackbarOpen: true,
+        errorSnackbarMessage: 'You don\'t have enough coins!'
       });
     }
     this.setState({
@@ -208,6 +230,21 @@ class Shop extends Component {
   closeEditDialog = e => this.setState({ editDialogOpen: false });
 
   closeBuyDialog = e => this.setState({ buyDialogOpen: false });
+
+  closeErrorSnackbar = () => this.setState({
+    errorSnackbarOpen: false,
+    errorSnackbarMessage: ''
+  });
+
+  closeInfoSnackbar = () => this.setState({
+    infoSnackbarOpen: false,
+    infoSnackbarMessage: ''
+  });
+
+  closeDangerSnackbar = () => this.setState({
+    dangerSnackbarOpen: false,
+    dangerSnackbarMessage: ''
+  });
 
 
   render() {
@@ -239,9 +276,9 @@ class Shop extends Component {
       <>
         <Navbar navValue={2} />
         <main className={classes.main}>
-          <header className={classes.titleWrapper}>
-            <Typography variant="h5" align="center">You have: {coins} coins</Typography>
-          </header>
+            <header className={classes.titleWrapper}>
+              <Typography variant="h5" align="center">{this.props.shop.loading ? <span>&nbsp;</span> : `You have: ${coins} coins`}</Typography>
+            </header>
           <div className={classes.addBtnContainer}>
             <Button
               color="secondary"
@@ -252,12 +289,24 @@ class Shop extends Component {
             >
               <Add /> Create reward</Button>
           </div>
+          {this.props.shop.loading ?
+            <div className={classes.loadingWrapper}>
+              <CircularProgress style={{ width: 60, height: 60 }} />
+            </div> : null}
           <Grid
             container={true}
             className={classes.rewardsGridContainer}
             spacing={16}
           >
-            {rewardsList}
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={300}
+              component={React.Fragment}
+              transitionAppear={true}
+              transitionAppearTimeout={200}>
+              {rewardsList}
+            </ReactCSSTransitionGroup>
           </Grid>
           <Dialog
             aria-labelledby="Reward Creation"
@@ -413,6 +462,42 @@ class Shop extends Component {
             </Button>
             </DialogActions>
           </Dialog>
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.error
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.state.errorSnackbarOpen}
+            autoHideDuration={5000}
+            onClose={this.closeErrorSnackbar}
+            message={this.state.errorSnackbarMessage}
+          />
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.info
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.state.infoSnackbarOpen}
+            autoHideDuration={5000}
+            onClose={this.closeInfoSnackbar}
+            message={this.state.infoSnackbarMessage}
+          />
+          <Snackbar
+            ContentProps={{
+              classes: {
+                root: classes.danger
+              }
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={this.state.dangerSnackbarOpen}
+            autoHideDuration={5000}
+            onClose={this.closeDangerSnackbar}
+            message={this.state.dangerSnackbarMessage}
+          />
         </main>
       </>
     )
