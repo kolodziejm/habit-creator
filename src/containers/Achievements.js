@@ -5,11 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import jwtDecode from 'jwt-decode';
 import axios from '../config/axios';
 import { logoutUser } from '../actions/authActions';
+import { setAchievements } from '../actions/achievementActions';
 
 import theme from '../theme';
 
 import Navbar from '../components/Navbar';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography, CircularProgress, Card, CardContent } from '@material-ui/core';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import '../animations/fade.css';
@@ -55,20 +56,45 @@ const styles = {
 
 class Achievements extends Component {
 
+  state = {
+    errors: {},
+
+  };
+
   componentDidMount() {
     const token = jwtDecode(localStorage.jwtToken);
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
-    // axios.get achievements
+    axios.get('/achievements')
+      .then(res => {
+        console.log(res.data);
+        this.props.setAchievements(res.data);
+      })
+      .catch(err => this.setState({ errors: err.response.data }))
   };
 
   render() {
     const { classes } = this.props;
 
+    const achievementList = this.props.achiev.achievements.map(achievement => (
+      <Card className={classes.card} key={achievement._id}>
+        <img src={require(`../assets/achievementIcons/${achievement.imageName}`)} alt={achievement.imageName} />
+        <CardContent>
+          {achievement.title} <span>&nbsp;</span>
+          {achievement.subtitle} <span>&nbsp;</span>
+          {achievement.value}
+        </CardContent>
+      </Card>
+    ));
+
     return (
       <>
         <Navbar navValue={3} />
         <main>
-
+          {achievementList}
+          {this.props.achiev.loading ?
+            <div className={classes.loadingWrapper}>
+              <CircularProgress style={{ width: 60, height: 60 }} />
+            </div> : null}
         </main>
       </>
     )
@@ -76,7 +102,7 @@ class Achievements extends Component {
 }
 
 const mapStateToProps = state => ({
-
+  achiev: state.achiev
 });
 
-export default connect(mapStateToProps, { logoutUser })(withRouter(withStyles(styles)(Achievements)));
+export default connect(mapStateToProps, { logoutUser, setAchievements })(withRouter(withStyles(styles)(Achievements)));
