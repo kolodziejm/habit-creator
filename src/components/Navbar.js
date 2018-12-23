@@ -102,6 +102,7 @@ class Navbar extends React.Component {
         <Tab label="Dashboard" className={classes.tab} component={Link} to="/" />
         <Tab label="Manage" className={classes.tab} component={Link} to="/manage" />
         <Tab label="Shop" className={classes.tab} component={Link} to="/shop" />
+        <Tab label="Achievements" className={classes.tab} component={Link} to="/achievements" />
       </Tabs>
     );
 
@@ -113,6 +114,8 @@ class Navbar extends React.Component {
         <ListItem button selected={this.props.navValue === 1} component={Link} to="/manage">Manage</ListItem>
         <Divider />
         <ListItem button selected={this.props.navValue === 2} component={Link} to="/shop">Shop</ListItem>
+        <Divider />
+        <ListItem button selected={this.props.navValue === 3} component={Link} to="/achievements">Achievements</ListItem>
         <Divider />
       </List>
     );

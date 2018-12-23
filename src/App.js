@@ -10,6 +10,7 @@ import Login from './containers/Login';
 import Dashboard from './containers/Dashboard';
 import Manage from './containers/Manage';
 import Shop from './containers/Shop';
+import Achievements from './containers/Achievements';
 
 import theme from './theme';
 import store from './store';
@@ -39,6 +40,7 @@ class App extends Component {
         <Route exact path="/" component={Dashboard} />
         <Route exact path="/manage" component={Manage} />
         <Route exact path="/shop" component={Shop} />
+        <Route exact path="/achievements" component={Achievements} />
       </Switch>
     );
 
