@@ -8,6 +8,7 @@ import { logoutUser } from '../actions/authActions';
 import { setAchievements } from '../actions/achievementActions';
 
 import theme from '../theme';
+import Achievement from '../components/Achievement';
 
 import Navbar from '../components/Navbar';
 import { Typography, CircularProgress, Card, CardContent } from '@material-ui/core';
@@ -58,7 +59,6 @@ class Achievements extends Component {
 
   state = {
     errors: {},
-
   };
 
   componentDidMount() {
@@ -76,14 +76,13 @@ class Achievements extends Component {
     const { classes } = this.props;
 
     const achievementList = this.props.achiev.achievements.map(achievement => (
-      <Card className={classes.card} key={achievement._id}>
-        <img src={require(`../assets/achievementIcons/${achievement.imageName}`)} alt={achievement.imageName} />
-        <CardContent>
-          {achievement.title} <span>&nbsp;</span>
-          {achievement.subtitle} <span>&nbsp;</span>
-          {achievement.value}
-        </CardContent>
-      </Card>
+      <Achievement
+        key={achievement._id}
+        imageName={achievement.imageName}
+        title={achievement.title}
+        subtitle={achievement.subtitle}
+        value={achievement.value}
+      />
     ));
 
     return (
