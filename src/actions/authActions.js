@@ -17,5 +17,5 @@ export const logoutUser = history => dispatch => {
     type: LOGOUT_USER
   })
   localStorage.removeItem('jwtToken');
-  history.push('/');
+  history ? history.push('/') : window.location.href = '/';
 };

@@ -32,6 +32,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 64
   },
   titleWrapper: {
     margin: '16px 0 8px 0'
@@ -45,6 +46,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 16
+  },
+  noActiveHabits: {
+    marginTop: 32
   }
 };
 
@@ -117,26 +121,29 @@ class Dashboard extends Component {
       <>
         <Navbar navValue={0} />
         <main>
-          <div className={classes.titleWrapper}>
-            <Typography variant="h4" align="center">Today's progress</Typography>
-            <Typography variant="h5" align="center">
-              {completedPercent !== 'NaN' ? <span>{completedPercent}%</span> : <span>&nbsp;</span>}
-            </Typography>
-          </div>
-          <div className={classes.progressWrapper}>
-            <Line
-              percent={completedPercent !== 'NaN' ? completedPercent : 0}
-              strokeWidth="2"
-              trailWidth="2"
-              strokeColor={theme.palette.secondary.main} />
-          </div>
+          {this.props.habits.habits.length > 0 ?
+            <>
+              <div className={classes.titleWrapper}>
+                <Typography variant="h4" align="center">Today's progress</Typography>
+                <Typography variant="h5" align="center">
+                  {completedPercent !== 'NaN' ? <span>{completedPercent}%</span> : <span>&nbsp;</span>}
+                </Typography>
+              </div>
+              <div className={classes.progressWrapper}>
+                <Line
+                  percent={completedPercent !== 'NaN' ? completedPercent : 0}
+                  strokeWidth="2"
+                  trailWidth="2"
+                  strokeColor={theme.palette.secondary.main} />
+              </div>
+            </> : null}
           <ul className={classes.list}>
             {this.props.habits.loading ?
               <div className={classes.loadingWrapper}>
                 <CircularProgress style={{ width: 60, height: 60 }} />
               </div>
               : habitList.length > 0 ? habitList :
-                <div>
+                <div className={classes.noActiveHabits}>
                   <Typography variant="h5" align="center">You currently don't have any active habits</Typography>
                   <div className={classes.linkBtnWrapper}>
                     <Button
