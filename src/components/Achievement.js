@@ -5,11 +5,18 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
     listItem: {
-        listStyle: 'none'
+        listStyle: 'none',
+        height: '100%'
+    },
+    card: {
+        height: '100%',
+        maxWidth: 280,
+        margin: '0 auto'
     },
     image: {
         height: 64,
-        width: 64
+        width: 64,
+        margin: '8px auto 0px auto'
     }
 };
 
@@ -32,8 +39,8 @@ const achievement = props => {
           <Typography variant="subtitle1" align="center">
             {props.subtitle}
           </Typography>
-          <Typography variant="body2" align="center">
-            {props.value}
+          <Typography variant="subtitle2" align="center">
+            Reward: {props.value} coins
           </Typography>
         </CardContent>
       </Card>

@@ -11,7 +11,7 @@ import theme from '../theme';
 import Achievement from '../components/Achievement';
 
 import Navbar from '../components/Navbar';
-import { Typography, CircularProgress, Card, CardContent } from '@material-ui/core';
+import { Typography, CircularProgress, Grid } from '@material-ui/core';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import '../animations/fade.css';
@@ -25,6 +25,11 @@ const styles = {
     flexDirection: 'column',
     maxWidth: '900px'
   },
+  main: {
+    margin: '0 auto',
+    maxWidth: 916,
+    padding: '0 16px'
+  },
   progressWrapper: {
     maxWidth: '900px',
     padding: '0 8px 0 8px',
@@ -36,8 +41,8 @@ const styles = {
     justifyContent: 'center',
     marginTop: 64
   },
-  titleWrapper: {
-    margin: '16px 0 8px 0'
+  rewardsGridContainer: {
+    margin: '16px 0px 16px 0px'
   },
   info: {
     backgroundColor: theme.palette.info.backgroundColor,
@@ -76,20 +81,41 @@ class Achievements extends Component {
     const { classes } = this.props;
 
     const achievementList = this.props.achiev.achievements.map(achievement => (
+      <Grid
+      key={achievement._id}
+      item={true}
+      xs={12}
+      sm={6}
+      md={4}
+    >
       <Achievement
-        key={achievement._id}
         imageName={achievement.imageName}
         title={achievement.title}
         subtitle={achievement.subtitle}
         value={achievement.value}
       />
+      </Grid>
     ));
 
     return (
       <>
         <Navbar navValue={3} />
-        <main>
-          {achievementList}
+        <main className={classes.main}>
+          <Grid
+            container={true}
+            className={classes.rewardsGridContainer}
+            spacing={16}
+          >
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={300}
+              component={React.Fragment}
+              transitionAppear={true}
+              transitionAppearTimeout={200}>
+              {achievementList}
+            </ReactCSSTransitionGroup>
+          </Grid>
           {this.props.achiev.loading ?
             <div className={classes.loadingWrapper}>
               <CircularProgress style={{ width: 60, height: 60 }} />
