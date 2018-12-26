@@ -71,10 +71,9 @@ class Achievements extends Component {
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     axios.get('/achievements')
       .then(res => {
-        console.log(res.data);
         this.props.setAchievements(res.data);
       })
-      .catch(err => this.setState({ errors: err.response.data }))
+      .catch(err => this.setState({ errors: err.response }))
   };
 
   render() {
@@ -82,20 +81,22 @@ class Achievements extends Component {
 
     const achievementList = this.props.achiev.achievements.map(achievement => (
       <Grid
-      key={achievement._id}
-      item={true}
-      xs={12}
-      sm={6}
-      md={4}
-    >
-      <Achievement
-        imageName={achievement.imageName}
-        title={achievement.title}
-        subtitle={achievement.subtitle}
-        value={achievement.value}
-      />
+        key={achievement._id}
+        item={true}
+        xs={12}
+        sm={6}
+        md={4}
+      >
+        <Achievement
+          imageName={achievement.imageName}
+          title={achievement.title}
+          subtitle={achievement.subtitle}
+          value={achievement.value}
+          isFinished={achievement.usersWhoFinished.includes(this.props.auth.user.userId) ? true : false}
+        />
       </Grid>
-    ));
+    )
+    );
 
     return (
       <>
@@ -127,7 +128,8 @@ class Achievements extends Component {
 }
 
 const mapStateToProps = state => ({
-  achiev: state.achiev
+  achiev: state.achiev,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { logoutUser, setAchievements })(withRouter(withStyles(styles)(Achievements)));
