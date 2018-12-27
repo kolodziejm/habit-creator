@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Card, CardHeader, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Check } from '@material-ui/icons';
+import theme from '../theme';
 
 const styles = {
   listItem: {
@@ -11,12 +13,21 @@ const styles = {
   card: {
     height: '100%',
     maxWidth: 280,
-    margin: '0 auto'
+    margin: '0 auto',
+    position: 'relative'
   },
   image: {
     height: 64,
     width: 64,
     margin: '8px auto 0px auto'
+  },
+  finishedIcon: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    height: 40,
+    width: 40,
+    color: theme.palette.secondary.main
   }
 };
 // TODO: Finished achievement styles
@@ -32,6 +43,7 @@ const achievement = props => {
           title={props.title}
           className={classes.image}
         />
+        {props.isFinished ? <Check className={classes.finishedIcon} /> : null}
         <CardContent>
           <Typography variant="h6" align="center">
             <strong>{props.title}</strong>
