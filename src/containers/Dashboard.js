@@ -71,7 +71,10 @@ class Dashboard extends Component {
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
     axios.get('/habits')
       .then(res => {
-        this.props.setHabits(res.data);
+        this.props.setHabits(res.data.habits);
+        if (res.data.failAchievValue > 0) {
+          this.props.updateCoins(res.data.coins);
+        }
       })
       .catch(err => this.setState({ errors: err.response.data }))
   };

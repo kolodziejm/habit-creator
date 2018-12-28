@@ -10,6 +10,7 @@ import theme from '../theme';
 
 import { setHabits, addHabit, deleteHabit, editHabit } from '../actions/habitActions';
 import { logoutUser } from '../actions/authActions';
+import { updateCoins } from '../actions/shopActions';
 
 import Navbar from '../components/Navbar';
 import EditHabitItem from '../components/EditHabitItem';
@@ -100,8 +101,16 @@ class Manage extends Component {
     if (token.exp < Date.now() / 1000) return this.props.logoutUser(this.props.history, true);
 
     axios.get('/habits')
-      .then(res => this.props.setHabits(res.data))
-      .catch(err => this.setState({ errors: err }))
+      .then(res => {
+        this.props.setHabits(res.data.habits);
+        if (res.data.failAchievValue > 0) {
+          this.props.updateCoins(res.data.coins);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ errors: err })
+      })
   }
 
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
@@ -501,4 +510,4 @@ const mapStateToProps = state => ({
   habits: state.habit
 });
 
-export default connect(mapStateToProps, { setHabits, logoutUser, addHabit, deleteHabit, editHabit })(withRouter(withStyles(styles)(Manage)));
+export default connect(mapStateToProps, { setHabits, logoutUser, addHabit, deleteHabit, editHabit, updateCoins })(withRouter(withStyles(styles)(Manage)));
