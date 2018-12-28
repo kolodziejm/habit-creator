@@ -276,9 +276,9 @@ class Shop extends Component {
       <>
         <Navbar navValue={2} />
         <main className={classes.main}>
-            <header className={classes.titleWrapper}>
-              <Typography variant="h5" align="center">{this.props.shop.loading ? <span>&nbsp;</span> : `You have: ${coins} coins`}</Typography>
-            </header>
+          <header className={classes.titleWrapper}>
+            <Typography variant="h5" align="center">{this.props.shop.loading ? <span>&nbsp;</span> : `You have: ${coins} coins`}</Typography>
+          </header>
           <div className={classes.addBtnContainer}>
             <Button
               color="secondary"
@@ -325,7 +325,6 @@ class Shop extends Component {
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.title}
-                  autoFocus
                   type="text"
                   label="Reward title*"
                   name="title"
@@ -391,7 +390,6 @@ class Shop extends Component {
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.editTitle}
-                  autoFocus
                   type="text"
                   label="Reward title*"
                   name="editTitle"

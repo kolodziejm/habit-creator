@@ -75,7 +75,6 @@ class Register extends Component {
               onSubmit={this.onSubmitHandler}>
               <input type="submit" style={{ visibility: 'hidden' }} />
               <TextField
-                autoFocus
                 margin="normal"
                 id="username"
                 label="Username"

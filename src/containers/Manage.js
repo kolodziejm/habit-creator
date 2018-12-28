@@ -290,7 +290,6 @@ class Manage extends Component {
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.name}
-                  autoFocus
                   type="text"
                   label="Habit name"
                   name="name"
@@ -384,7 +383,6 @@ class Manage extends Component {
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.editHabitName}
-                  autoFocus
                   type="text"
                   label="Habit name"
                   name="editHabitName"
