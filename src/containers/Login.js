@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import Logo from '../components/Logo/Logo';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, TextField, AppBar, CircularProgress, Snackbar } from '@material-ui/core';
+import { Paper, Typography, TextField, AppBar, CircularProgress, Snackbar, Hidden } from '@material-ui/core';
 import CtaButton from '../components/CtaButton';
 import Navbar from '../components/Navbar';
 
@@ -90,18 +90,35 @@ class Login extends Component {
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
               <input type="submit" style={{ visibility: 'hidden' }} />
-              <TextField
-                margin="normal"
-                id="username"
-                label="Username"
-                name="username"
-                type="text"
-                fullWidth
-                onChange={this.inputChangedHandler}
-                value={this.state.username}
-                error={errors.username ? true : false}
-                helperText={errors.username ? errors.username : ''}
-              />
+              <Hidden only={['md', 'lg', 'xl']}>
+                <TextField
+                  margin="normal"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  type="text"
+                  fullWidth
+                  onChange={this.inputChangedHandler}
+                  value={this.state.username}
+                  error={errors.username ? true : false}
+                  helperText={errors.username ? errors.username : ''}
+                />
+              </Hidden>
+              <Hidden only={['xs', 'sm']}>
+                <TextField
+                  margin="normal"
+                  autoFocus
+                  id="username"
+                  label="Username"
+                  name="username"
+                  type="text"
+                  fullWidth
+                  onChange={this.inputChangedHandler}
+                  value={this.state.username}
+                  error={errors.username ? true : false}
+                  helperText={errors.username ? errors.username : ''}
+                />
+              </Hidden>
               <TextField
                 margin="normal"
                 id="password"

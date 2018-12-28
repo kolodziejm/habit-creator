@@ -13,7 +13,7 @@ import theme from '../theme';
 import Reward from '../components/Reward';
 
 import Navbar from '../components/Navbar';
-import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, Snackbar, TextField, Grid } from '@material-ui/core';
+import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, Snackbar, TextField, Grid, Hidden } from '@material-ui/core';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import '../animations/fade.css';
@@ -322,17 +322,33 @@ class Shop extends Component {
             </DialogContentText>
               <form onSubmit={this.addNewReward}>
                 <input type="submit" style={{ visibility: 'hidden' }} />
-                <TextField
-                  onChange={this.inputChangedHandler}
-                  value={this.state.title}
-                  type="text"
-                  label="Reward title*"
-                  name="title"
-                  margin="dense"
-                  fullWidth
-                  error={errors.title ? true : false}
-                  helperText={errors.title ? errors.title : null}
-                />
+                <Hidden only={['md', 'lg', 'xl']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.title}
+                    type="text"
+                    label="Reward title*"
+                    name="title"
+                    margin="dense"
+                    fullWidth
+                    error={errors.title ? true : false}
+                    helperText={errors.title ? errors.title : null}
+                  />
+                </Hidden>
+                <Hidden only={['xs', 'sm']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.title}
+                    autoFocus
+                    type="text"
+                    label="Reward title*"
+                    name="title"
+                    margin="dense"
+                    fullWidth
+                    error={errors.title ? true : false}
+                    helperText={errors.title ? errors.title : null}
+                  />
+                </Hidden>
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.price}
@@ -387,17 +403,33 @@ class Shop extends Component {
             </DialogContentText>
               <form onSubmit={this.addNewReward}>
                 <input type="submit" style={{ visibility: 'hidden' }} />
-                <TextField
-                  onChange={this.inputChangedHandler}
-                  value={this.state.editTitle}
-                  type="text"
-                  label="Reward title*"
-                  name="editTitle"
-                  margin="dense"
-                  fullWidth
-                  error={errors.editTitle ? true : false}
-                  helperText={errors.editTitle ? errors.editTitle : null}
-                />
+                <Hidden only={['md', 'lg', 'xl']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.editTitle}
+                    type="text"
+                    label="Reward title*"
+                    name="editTitle"
+                    margin="dense"
+                    fullWidth
+                    error={errors.editTitle ? true : false}
+                    helperText={errors.editTitle ? errors.editTitle : null}
+                  />
+                </Hidden>
+                <Hidden only={['xs', 'sm']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.editTitle}
+                    autoFocus
+                    type="text"
+                    label="Reward title*"
+                    name="editTitle"
+                    margin="dense"
+                    fullWidth
+                    error={errors.editTitle ? true : false}
+                    helperText={errors.editTitle ? errors.editTitle : null}
+                  />
+                </Hidden>
                 <TextField
                   onChange={this.inputChangedHandler}
                   value={this.state.editPrice}

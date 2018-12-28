@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from '../config/axios';
 import { withStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography, CircularProgress, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Menu, MenuItem, Button, Dialog, DialogContent, DialogContentText, TextField, DialogActions, DialogTitle, Snackbar, Typography, CircularProgress, Radio, RadioGroup, FormControlLabel, Hidden } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { CirclePicker } from 'react-color';
 import theme from '../theme';
@@ -287,16 +287,31 @@ class Manage extends Component {
               </DialogContentText>
               <form onSubmit={this.addNewHabit}>
                 <input type="submit" style={{ visibility: 'hidden' }} />
-                <TextField
-                  onChange={this.inputChangedHandler}
-                  value={this.state.name}
-                  type="text"
-                  label="Habit name"
-                  name="name"
-                  fullWidth
-                  error={errors.name ? true : false}
-                  helperText={errors.name ? errors.name : null}
-                />
+                <Hidden only={['md', 'lg', 'xl']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.name}
+                    type="text"
+                    label="Habit name"
+                    name="name"
+                    fullWidth
+                    error={errors.name ? true : false}
+                    helperText={errors.name ? errors.name : null}
+                  />
+                </Hidden>
+                <Hidden only={['xs', 'sm']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.name}
+                    type="text"
+                    autoFocus
+                    label="Habit name"
+                    name="name"
+                    fullWidth
+                    error={errors.name ? true : false}
+                    helperText={errors.name ? errors.name : null}
+                  />
+                </Hidden>
                 <RadioGroup
                   aria-label="difficulty"
                   name="difficulty"
@@ -380,16 +395,31 @@ class Manage extends Component {
             <DialogContent>
               <form onSubmit={this.editHabit}>
                 <input type="submit" style={{ visibility: 'hidden' }} />
-                <TextField
-                  onChange={this.inputChangedHandler}
-                  value={this.state.editHabitName}
-                  type="text"
-                  label="Habit name"
-                  name="editHabitName"
-                  fullWidth
-                  error={errors.editHabitName ? true : false}
-                  helperText={errors.editHabitName ? errors.editHabitName : null}
-                />
+                <Hidden only={['md', 'lg', 'xl']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.editHabitName}
+                    type="text"
+                    label="Habit name"
+                    name="editHabitName"
+                    fullWidth
+                    error={errors.editHabitName ? true : false}
+                    helperText={errors.editHabitName ? errors.editHabitName : null}
+                  />
+                </Hidden>
+                <Hidden only={['xs', 'sm']}>
+                  <TextField
+                    onChange={this.inputChangedHandler}
+                    value={this.state.editHabitName}
+                    type="text"
+                    autoFocus
+                    label="Habit name"
+                    name="editHabitName"
+                    fullWidth
+                    error={errors.editHabitName ? true : false}
+                    helperText={errors.editHabitName ? errors.editHabitName : null}
+                  />
+                </Hidden>
                 <RadioGroup
                   aria-label="difficulty"
                   name="difficulty"
