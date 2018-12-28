@@ -20,7 +20,7 @@ const styles = {
     maxWidth: 640,
     padding: `0 8px 16px 8px`,
     [theme.breakpoints.down('sm')]: {
-      margin: '16px auto 0 auto'
+      margin: '8px auto 0 auto'
     },
     [theme.breakpoints.up('sm')]: {
       margin: '32px auto 0 auto',
