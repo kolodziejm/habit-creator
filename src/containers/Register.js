@@ -18,15 +18,21 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 640,
-    margin: '80px auto 0 auto',
     padding: `0 8px 16px 8px`,
+    [theme.breakpoints.down('sm')]: {
+      margin: '16px auto 0 auto'
+    },
     [theme.breakpoints.up('sm')]: {
+      margin: '32px auto 0 auto',
       padding: `0 32px 24px 32px`
     },
+    [theme.breakpoints.up('md')]: {
+      margin: '80px auto 0 auto',
+    }
   },
   lastInput: {
     marginBottom: 32
-  }
+  },
 };
 
 class Register extends Component {
