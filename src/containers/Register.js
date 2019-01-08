@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../config/axios';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Logo from '../components/Logo/Logo';
 
@@ -9,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography, TextField, AppBar, CircularProgress, Hidden } from '@material-ui/core';
 import CtaButton from '../components/CtaButton';
 import Navbar from '../components/Navbar';
+import { setLoginInfo } from '../actions/authActions';
 
 const styles = {
   main: {
@@ -55,6 +57,7 @@ class Register extends Component {
     };
     axios.post('/auth/register', registerData)
       .then(res => {
+        this.props.setLoginInfo('Account created. You can now login')
         this.props.history.push('/');
       })
       .catch(err => {
@@ -148,4 +151,4 @@ class Register extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Register));
+export default connect(null, { setLoginInfo })(withRouter(withStyles(styles)(Register)));

@@ -82,6 +82,7 @@ class Login extends Component {
   render() {
     const { classes } = this.props;
     const { errors, btnLoading } = this.state;
+    const { expiredInfo, loginInfo } = this.props.auth;
 
     return (
       <>
@@ -155,9 +156,9 @@ class Login extends Component {
               }
             }}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            open={this.props.auth.expiredInfo !== ''}
+            open={expiredInfo !== '' || loginInfo !== ''}
             autoHideDuration={10000}
-            message={this.props.auth.expiredInfo}
+            message={expiredInfo || loginInfo }
             onClose={this.props.clearExpiredInfo}
           />
         </main>

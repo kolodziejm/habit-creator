@@ -1,7 +1,7 @@
 import dispatch from 'redux-thunk';
 import axios from '../config/axios';
 
-import { SET_USER, LOGOUT_USER, CLEAR_EXPIRED_INFO } from './types';
+import { SET_USER, LOGOUT_USER, CLEAR_EXPIRED_INFO, SET_LOGIN_INFO } from './types';
 
 export const setUser = userData => dispatch => {
   axios.defaults.headers.common['Authorization'] = localStorage.jwtToken;
@@ -23,4 +23,9 @@ export const logoutUser = (history, withMessage) => dispatch => {
 
 export const clearExpiredInfo = () => ({
   type: CLEAR_EXPIRED_INFO
+});
+
+export const setLoginInfo = message => ({
+  type: SET_LOGIN_INFO,
+  message
 });

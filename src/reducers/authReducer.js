@@ -1,9 +1,10 @@
-import { SET_USER, LOGOUT_USER, CLEAR_EXPIRED_INFO } from '../actions/types';
+import { SET_USER, LOGOUT_USER, CLEAR_EXPIRED_INFO, SET_LOGIN_INFO } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
   user: {},
-  expiredInfo: ''
+  expiredInfo: '',
+  loginInfo: '',
 }
 
 export default (state = initialState, action) => {
@@ -26,7 +27,14 @@ export default (state = initialState, action) => {
     case CLEAR_EXPIRED_INFO:
       return {
         ...state,
-        expiredInfo: ''
+        expiredInfo: '',
+        loginInfo: ''
+      }
+
+    case SET_LOGIN_INFO:
+      return {
+        ...state,
+        loginInfo: action.message
       }
 
     default:
