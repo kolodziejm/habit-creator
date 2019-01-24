@@ -1,13 +1,13 @@
 {
   "main.css": "/habit-creator/static/css/main.698bcf30.chunk.css",
-  "main.js": "/habit-creator/static/js/main.cce2d3ae.chunk.js",
-  "main.js.map": "/habit-creator/static/js/main.cce2d3ae.chunk.js.map",
+  "main.js": "/habit-creator/static/js/main.f6ee79a9.chunk.js",
+  "main.js.map": "/habit-creator/static/js/main.f6ee79a9.chunk.js.map",
   "static/js/1.2309a8c6.chunk.js": "/habit-creator/static/js/1.2309a8c6.chunk.js",
   "static/js/1.2309a8c6.chunk.js.map": "/habit-creator/static/js/1.2309a8c6.chunk.js.map",
   "runtime~main.js": "/habit-creator/static/js/runtime~main.e4957e6a.js",
   "runtime~main.js.map": "/habit-creator/static/js/runtime~main.e4957e6a.js.map",
   "static/css/main.698bcf30.chunk.css.map": "/habit-creator/static/css/main.698bcf30.chunk.css.map",
   "index.html": "/habit-creator/index.html",
-  "precache-manifest.f073eee664f9c6e802657cbeb8426f64.js": "/habit-creator/precache-manifest.f073eee664f9c6e802657cbeb8426f64.js",
+  "precache-manifest.22540dd3a510711f1a49c6d4463e2067.js": "/habit-creator/precache-manifest.22540dd3a510711f1a49c6d4463e2067.js",
   "service-worker.js": "/habit-creator/service-worker.js"
 }
