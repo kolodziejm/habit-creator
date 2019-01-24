@@ -50,8 +50,15 @@ class Register extends Component {
 
   onSubmitHandler = e => {
     e.preventDefault();
-    this.setState({ btnLoading: true });
     const { username, password, confirmPassword } = this.state;
+    const errors = {};
+    if (username === '') errors.username = 'Enter a username';
+    if (password === '') errors.password = 'Enter a password';
+    if (confirmPassword === '') errors.confirmPassword = 'Confirm your password';
+    if (Object.entries(errors).length > 0 && errors.constructor === Object) {
+      return this.setState({ errors });
+    }
+    this.setState({ btnLoading: true, errors: {} });
     const registerData = {
       username, password, confirmPassword
     };
@@ -61,6 +68,7 @@ class Register extends Component {
         this.props.history.push('/');
       })
       .catch(err => {
+        console.log(err);
         this.setState({ errors: err.response.data, btnLoading: false });
       });
   }
