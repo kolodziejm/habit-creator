@@ -93,7 +93,7 @@ class Register extends Component {
               <input type="submit" style={{ visibility: 'hidden' }} />
               <Hidden only={['md', 'lg', 'xl']}>
                 <TextField
-                  margin="normal"
+                  margin="dense"
                   id="username"
                   label="Username"
                   name="username"
@@ -102,12 +102,12 @@ class Register extends Component {
                   onChange={this.inputChangedHandler}
                   value={this.state.username}
                   error={errors.username ? true : false}
-                  helperText={errors.username ? errors.username : ''}
+                  helperText={errors.username ? errors.username : <span>&nbsp;</span>}
                 />
               </Hidden>
               <Hidden only={['xs', 'sm']}>
                 <TextField
-                  margin="normal"
+                  margin="dense"
                   autoFocus
                   id="username"
                   label="Username"
@@ -117,11 +117,11 @@ class Register extends Component {
                   onChange={this.inputChangedHandler}
                   value={this.state.username}
                   error={errors.username ? true : false}
-                  helperText={errors.username ? errors.username : ''}
+                  helperText={errors.username ? errors.username : <span>&nbsp;</span>}
                 />
               </Hidden>
               <TextField
-                margin="normal"
+                margin="dense"
                 id="password"
                 label="Password"
                 name="password"
@@ -130,10 +130,10 @@ class Register extends Component {
                 onChange={this.inputChangedHandler}
                 value={this.state.password}
                 error={errors.password ? true : false}
-                helperText={errors.password ? errors.password : ''}
+                helperText={errors.password ? errors.password : <span>&nbsp;</span>}
               />
               <TextField
-                margin="normal"
+                margin="dense"
                 id="confirmPassword"
                 label="Confirm password"
                 name="confirmPassword"
@@ -143,7 +143,7 @@ class Register extends Component {
                 value={this.state.confirmPassword}
                 className={classes.lastInput}
                 error={errors.confirmPassword ? true : false}
-                helperText={errors.confirmPassword ? errors.confirmPassword : ''}
+                helperText={errors.confirmPassword ? errors.confirmPassword : <span>&nbsp;</span>}
               />
             </form>
             <CtaButton
