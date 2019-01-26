@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/habit-creator/precache-manifest.22540dd3a510711f1a49c6d4463e2067.js"
+  "/habit-creator/precache-manifest.c65eee0d55d8423272258533040564d6.js"
 );
 
 workbox.clientsClaim();
