@@ -90,7 +90,7 @@ class Register extends Component {
             <form
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
-              <input type="submit" style={{ visibility: 'hidden' }} />
+              <input type="submit" disabled={btnLoading} style={{ visibility: 'hidden' }} />
               <Hidden only={['md', 'lg', 'xl']}>
                 <TextField
                   margin="dense"
@@ -147,6 +147,7 @@ class Register extends Component {
               />
             </form>
             <CtaButton
+              disabled={btnLoading}
               clicked={this.onSubmitHandler}>
               {btnLoading ?
                 <CircularProgress

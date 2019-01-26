@@ -15,6 +15,7 @@ const styles = {
 const CtaButton = props => (
   <Button
     onClick={props.clicked}
+    disabled={props.disabled}
     className={props.classes.root}
   >{props.children}</Button>
 );

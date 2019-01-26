@@ -97,7 +97,7 @@ class Login extends Component {
             <form
               autoComplete="off"
               onSubmit={this.onSubmitHandler}>
-              <input type="submit" style={{ visibility: 'hidden' }} />
+              <input type="submit" disabled={btnLoading} style={{ visibility: 'hidden' }} />
               <Hidden only={['md', 'lg', 'xl']}>
                 <TextField
                   margin="normal"
@@ -143,6 +143,7 @@ class Login extends Component {
             </form>
             <CtaButton
               type="submit"
+              disabled={btnLoading}
               clicked={this.onSubmitHandler}>
               {btnLoading ?
                 <CircularProgress
@@ -158,7 +159,7 @@ class Login extends Component {
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             open={expiredInfo !== '' || loginInfo !== ''}
             autoHideDuration={10000}
-            message={expiredInfo || loginInfo }
+            message={expiredInfo || loginInfo}
             onClose={this.props.clearExpiredInfo}
           />
         </main>
