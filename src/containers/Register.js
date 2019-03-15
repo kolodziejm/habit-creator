@@ -1,50 +1,57 @@
-import React, { Component } from 'react'
-import axios from '../config/axios';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import axios from "../config/axios";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-import Logo from '../components/Logo/Logo';
+import Logo from "../components/Logo/Logo";
 
-import theme from '../theme';
-import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, TextField, AppBar, CircularProgress, Hidden } from '@material-ui/core';
-import CtaButton from '../components/CtaButton';
-import Navbar from '../components/Navbar';
-import { setLoginInfo } from '../actions/authActions';
+import theme from "../theme";
+import { withStyles } from "@material-ui/core/styles";
+import {
+  Paper,
+  Typography,
+  TextField,
+  AppBar,
+  CircularProgress,
+  Hidden
+} from "@material-ui/core";
+import CtaButton from "../components/CtaButton";
+import Navbar from "../components/Navbar";
+import { setLoginInfo } from "../actions/authActions";
 
 const styles = {
   main: {
-    margin: '0 10px'
+    margin: "0 10px"
   },
   paper: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     maxWidth: 640,
     padding: `0 8px 16px 8px`,
-    [theme.breakpoints.down('sm')]: {
-      margin: '8px auto 0 auto'
+    [theme.breakpoints.down("sm")]: {
+      margin: "8px auto 0 auto"
     },
-    [theme.breakpoints.up('sm')]: {
-      margin: '32px auto 0 auto',
+    [theme.breakpoints.up("sm")]: {
+      margin: "32px auto 0 auto",
       padding: `0 32px 24px 32px`
     },
-    [theme.breakpoints.up('md')]: {
-      margin: '80px auto 0 auto',
+    [theme.breakpoints.up("md")]: {
+      margin: "80px auto 0 auto"
     }
   },
   lastInput: {
     marginBottom: 32
-  },
+  }
 };
 
 class Register extends Component {
   state = {
-    username: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    password: "",
+    confirmPassword: "",
     errors: {},
     btnLoading: false
-  }
+  };
 
   inputChangedHandler = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -52,26 +59,30 @@ class Register extends Component {
     e.preventDefault();
     const { username, password, confirmPassword } = this.state;
     const errors = {};
-    if (username === '') errors.username = 'Enter a username';
-    if (password === '') errors.password = 'Enter a password';
-    if (confirmPassword === '') errors.confirmPassword = 'Confirm your password';
+    if (username === "") errors.username = "Enter a username";
+    if (password === "") errors.password = "Enter a password";
+    if (confirmPassword === "")
+      errors.confirmPassword = "Confirm your password";
     if (Object.entries(errors).length > 0 && errors.constructor === Object) {
       return this.setState({ errors });
     }
     this.setState({ btnLoading: true, errors: {} });
     const registerData = {
-      username, password, confirmPassword
+      username,
+      password,
+      confirmPassword
     };
-    axios.post('/auth/register', registerData)
+    axios
+      .post("/auth/register", registerData)
       .then(res => {
-        this.props.setLoginInfo('Account created. You can now login')
-        this.props.history.push('/');
+        this.props.setLoginInfo("Account created. You can now login");
+        this.props.history.push("/login");
       })
       .catch(err => {
         console.log(err);
         this.setState({ errors: err.response.data, btnLoading: false });
       });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -79,19 +90,24 @@ class Register extends Component {
 
     return (
       <>
-        <Navbar navValue={1} />
+        <Navbar navValue={2} />
         <main className={classes.main}>
           <Paper className={classes.paper}>
             <Logo width="200" />
             <Typography
               variant="h5"
               align="center"
-              className={classes.mainHeader}>Create account</Typography>
-            <form
-              autoComplete="off"
-              onSubmit={this.onSubmitHandler}>
-              <input type="submit" disabled={btnLoading} style={{ visibility: 'hidden' }} />
-              <Hidden only={['md', 'lg', 'xl']}>
+              className={classes.mainHeader}
+            >
+              Create account
+            </Typography>
+            <form autoComplete="off" onSubmit={this.onSubmitHandler}>
+              <input
+                type="submit"
+                disabled={btnLoading}
+                style={{ visibility: "hidden" }}
+              />
+              <Hidden only={["md", "lg", "xl"]}>
                 <TextField
                   margin="dense"
                   id="username"
@@ -102,10 +118,12 @@ class Register extends Component {
                   onChange={this.inputChangedHandler}
                   value={this.state.username}
                   error={errors.username ? true : false}
-                  helperText={errors.username ? errors.username : <span>&nbsp;</span>}
+                  helperText={
+                    errors.username ? errors.username : <span>&nbsp;</span>
+                  }
                 />
               </Hidden>
-              <Hidden only={['xs', 'sm']}>
+              <Hidden only={["xs", "sm"]}>
                 <TextField
                   margin="dense"
                   autoFocus
@@ -117,7 +135,9 @@ class Register extends Component {
                   onChange={this.inputChangedHandler}
                   value={this.state.username}
                   error={errors.username ? true : false}
-                  helperText={errors.username ? errors.username : <span>&nbsp;</span>}
+                  helperText={
+                    errors.username ? errors.username : <span>&nbsp;</span>
+                  }
                 />
               </Hidden>
               <TextField
@@ -130,7 +150,9 @@ class Register extends Component {
                 onChange={this.inputChangedHandler}
                 value={this.state.password}
                 error={errors.password ? true : false}
-                helperText={errors.password ? errors.password : <span>&nbsp;</span>}
+                helperText={
+                  errors.password ? errors.password : <span>&nbsp;</span>
+                }
               />
               <TextField
                 margin="dense"
@@ -143,21 +165,33 @@ class Register extends Component {
                 value={this.state.confirmPassword}
                 className={classes.lastInput}
                 error={errors.confirmPassword ? true : false}
-                helperText={errors.confirmPassword ? errors.confirmPassword : <span>&nbsp;</span>}
+                helperText={
+                  errors.confirmPassword ? (
+                    errors.confirmPassword
+                  ) : (
+                    <span>&nbsp;</span>
+                  )
+                }
               />
             </form>
-            <CtaButton
-              disabled={btnLoading}
-              clicked={this.onSubmitHandler}>
-              {btnLoading ?
+            <CtaButton disabled={btnLoading} clicked={this.onSubmitHandler}>
+              {btnLoading ? (
                 <CircularProgress
                   color="secondary"
-                  style={{ width: '19px', height: '19px' }} /> : 'Register'}</CtaButton>
+                  style={{ width: "19px", height: "19px" }}
+                />
+              ) : (
+                "Register"
+              )}
+            </CtaButton>
           </Paper>
         </main>
       </>
-    )
+    );
   }
 }
 
-export default connect(null, { setLoginInfo })(withRouter(withStyles(styles)(Register)));
+export default connect(
+  null,
+  { setLoginInfo }
+)(withRouter(withStyles(styles)(Register)));

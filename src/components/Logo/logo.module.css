@@ -1,8 +1,9 @@
 .image {
-  display: block;
   margin: 0 auto;
 }
 
 .figure {
   margin: 0 !important;
+  display: flex;
+  justify-content: center;
 }

@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
-import { Route, Switch, withRouter, Router } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
-import axios from './config/axios';
-import { connect } from 'react-redux';
-import { setUser, logoutUser } from './actions/authActions';
+import React, { Component } from "react";
+import { Route, Switch, withRouter, Router } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+import axios from "./config/axios";
+import { connect } from "react-redux";
+import { setUser, logoutUser } from "./actions/authActions";
 
-import Register from './containers/Register';
-import Login from './containers/Login';
-import Dashboard from './containers/Dashboard';
-import Manage from './containers/Manage';
-import Shop from './containers/Shop';
-import Achievements from './containers/Achievements';
+import Register from "./containers/Register";
+import Login from "./containers/Login";
+import Dashboard from "./containers/Dashboard";
+import Manage from "./containers/Manage";
+import Shop from "./containers/Shop";
+import Achievements from "./containers/Achievements";
+import Landing from "./containers/Landing/Landing";
 
-import theme from './theme';
-import store from './store';
+import theme from "./theme";
+import store from "./store";
 
-import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
-
+import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-    if (localStorage.jwtToken) { // set user in store with decoded token data if token exists
+    if (localStorage.jwtToken) {
+      // set user in store with decoded token data if token exists
       const decodedData = jwtDecode(localStorage.jwtToken);
-      if (decodedData.exp < Date.now() / 1000) { // unix in sec, Date obj in ms
+      if (decodedData.exp < Date.now() / 1000) {
+        // unix in sec, Date obj in ms
         store.dispatch(logoutUser(props.history, true));
       } else {
         store.dispatch(setUser(decodedData));
@@ -46,7 +47,8 @@ class App extends Component {
 
     const unauthRoutes = (
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
       </Switch>
     );
