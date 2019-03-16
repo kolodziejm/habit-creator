@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import classes from "./logo.module.css";
+import classes from "./Logo.module.css";
 
 export default props => (
   <figure className={classes.figure}>

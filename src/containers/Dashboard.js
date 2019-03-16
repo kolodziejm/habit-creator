@@ -98,7 +98,6 @@ class Dashboard extends Component {
     axios
       .patch(`/habits/finish/${habitId}`)
       .then(res => {
-        console.log(res.data.achievementCoins);
         this.props.finishHabit(habitId);
         this.props.updateCoins(res.data.coins);
         this.closeFinishDialog();
@@ -260,7 +259,7 @@ class Dashboard extends Component {
             }}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             open={this.state.infoSnackbarOpen}
-            autoHideDuration={5000}
+            autoHideDuration={6000}
             onClose={this.closeFinishSnackbar}
             message={this.state.infoSnackbarMessage}
           />
